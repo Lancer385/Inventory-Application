@@ -1,11 +1,12 @@
 #! /usr/bin/env node
 const { Client } = require("pg");
-require('dotenv').env
+require('dotenv').config()
 
 const SQL = `
 CREATE TABLE games (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  name TEXT NOT NULL
+  name TEXT NOT NULL,
+  description TEXT
 );
 CREATE TABLE genres (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -45,8 +46,12 @@ CREATE TABLE games_platforms (
   FOREIGN KEY (platform_id) REFERENCES platforms(id) ON DELETE CASCADE
 );
 
-INSERT INTO games (name) VALUES ('Celeste');
-INSERT INTO games (name) VALUES ('Hollow Knight');
+INSERT INTO games (name, description) VALUES ('Celeste',
+'Celeste is a 2018 platform video game developed and published by indie studio Maddy Makes Games. The player controls the player character Madeline, a young woman with anxiety and depression, who endeavors to climb Celeste Mountain, a fictional version of Mount Celeste.'
+);
+INSERT INTO games (name, description) VALUES ('Hollow Knight',
+'Hollow Knight is a 2017 Metroidvania video game developed and published by Australian independent developer Team Cherry. The player controls a nameless insectoid warrior in exploring Hallownest, a fallen kingdom plagued by a supernatural disease.'
+);
 INSERT INTO genres (types) VALUES ('Platformer');
 INSERT INTO genres (types) VALUES ('Turn-Based');
 INSERT INTO developers (name) VALUES ('Extremely OK games');
@@ -132,3 +137,5 @@ async function main() {
 }
 
 main();
+
+
