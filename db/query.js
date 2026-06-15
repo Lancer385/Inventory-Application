@@ -1,19 +1,19 @@
 const pool  = require('./pool');
 
 async function getAllGames(){
-    const games_platforms = (await pool.query('SELECT games.id AS "gameID", games.name AS "gameName" ,games.description AS "gameDescription",platforms.name AS platforms FROM games JOIN games_platforms ON games.id = games_platforms.game_id JOIN platforms ON platforms.id = platform_id')).rows;
-    const games_genres = (await pool.query('SELECT games.id AS "gameID", games.name AS "gameName" ,games.description AS "gameDescription",genres.types AS genres FROM games JOIN games_genres ON games.id = games_genres.game_id JOIN genres ON genres.id = genre_id')).rows;
-    const games_developers = (await pool.query('SELECT games.id AS "gameID", games.name AS "gameName" ,games.description AS "gameDescription",developers.name AS developers FROM games JOIN games_developers ON games.id = games_developers.game_id JOIN developers ON developers.id = developer_id')).rows;
-    games_platforms.push(...games_genres);
-    games_platforms.push(...games_developers);
-    const result = combine(games_platforms, "genres", "platforms", "developers");
-    return result;
+    const [games_platforms, games_genres, games_developers] = await Promise.all([
+        pool.query('SELECT games.id AS "gameID", games.name AS "gameName" ,games.description AS "gameDescription",platforms.name AS platforms FROM games JOIN games_platforms ON games.id = games_platforms.game_id JOIN platforms ON platforms.id = platform_id'),
+        pool.query('SELECT games.id AS "gameID", games.name AS "gameName" ,games.description AS "gameDescription",genres.types AS genres FROM games JOIN games_genres ON games.id = games_genres.game_id JOIN genres ON genres.id = genre_id'),
+        pool.query('SELECT games.id AS "gameID", games.name AS "gameName" ,games.description AS "gameDescription",developers.name AS developers FROM games JOIN games_developers ON games.id = games_developers.game_id JOIN developers ON developers.id = developer_id')
+    ]);
+
+    return [games_platforms.rows, games_genres.rows, games_developers.rows];
 };
 
 async function getCategories() {
     const [platforms, genres, developers] = await Promise.all([
         pool.query(`SELECT * FROM platforms`),
-        pool.query(`SELECT * FROM genres`),
+        pool.query(`SELECT id, types AS name FROM genres`),
         pool.query(`SELECT * FROM developers`)
     ]);
 
@@ -54,26 +54,9 @@ async function addRelation(junctionName, gameName, category){
 
 
 
-function combine(arr, genres, platforms, developers) {
-        const result = arr.reduce((acc, currentItem) => {
-        const condition = acc.find(item => item.gameID === currentItem.gameID );
-        if (!condition) {
-        const newCurr = {
-            gameID: currentItem.gameID,
-            gameName: currentItem.gameName,
-            gameDescription: currentItem.gameDescription,
-            [platforms]: [currentItem[platforms]],
-            [genres]: [],
-            [developers]: []
-        }
-        return acc.concat([newCurr])
-        } else {
-            currentItem[genres] && condition[genres].push(currentItem[genres]);
-            currentItem[platforms] && condition[platforms].push(currentItem[platforms]);
-            currentItem[developers] && condition[developers].push(currentItem[developers]);
-            return acc;
-        }
-    }, [])
-    return result;
-}
 
+
+module.exports = {
+    getAllGames,
+    getCategories,
+}
