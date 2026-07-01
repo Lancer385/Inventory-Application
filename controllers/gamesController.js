@@ -12,16 +12,18 @@ async function gamesGet(req, res){
     res.render("games", { games: games });
 };
 
-async function categoriesGet(req, res){
-   const categories = await db.getCategories();
+async function addGameGet(req, res){
+    const categories = await db.getCategories();
+    res.render("gamesForm", {categories: categories});
+}
 
-   res.render("categories", { categories: categories})
+async function addGamePost(req,res){
+
 }
 
 module.exports = {
-    indexGet,
     gamesGet,
-    categoriesGet
+    addGameGet
 }
     
 
