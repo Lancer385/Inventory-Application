@@ -3,6 +3,7 @@ const { Client } = require("pg");
 require('dotenv').config()
 
 const SQL = `
+DROP TABLE IF EXISTS games, genres, developers, platforms, games_genres, games_platforms, games_developers;
 CREATE TABLE games (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   name TEXT NOT NULL,
@@ -10,7 +11,7 @@ CREATE TABLE games (
 );
 CREATE TABLE genres (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  types TEXT NOT NULL
+  name TEXT NOT NULL
 );
 CREATE TABLE developers (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -52,8 +53,8 @@ INSERT INTO games (name, description) VALUES ('Celeste',
 INSERT INTO games (name, description) VALUES ('Hollow Knight',
 'Hollow Knight is a 2017 Metroidvania video game developed and published by Australian independent developer Team Cherry. The player controls a nameless insectoid warrior in exploring Hallownest, a fallen kingdom plagued by a supernatural disease.'
 );
-INSERT INTO genres (types) VALUES ('Platformer');
-INSERT INTO genres (types) VALUES ('Turn-Based');
+INSERT INTO genres (name) VALUES ('Platformer');
+INSERT INTO genres (name) VALUES ('Turn-Based');
 INSERT INTO developers (name) VALUES ('Extremely OK games');
 INSERT INTO developers (name) VALUES ('Team Cherry');
 INSERT INTO platforms (name) VALUES ('Xbox');
@@ -65,11 +66,11 @@ INSERT INTO platforms (name) VALUES ('Nintendo Switch');
 INSERT INTO games_genres (game_id, genre_id)
 VALUES (
   (SELECT id from games WHERE name = 'Celeste'),
-  (SELECT id from genres WHERE types = 'Platformer')
+  (SELECT id from genres WHERE name = 'Platformer')
 ),
 (
   (SELECT id from games WHERE name = 'Hollow Knight'),
-  (SELECT id from genres WHERE types = 'Platformer')
+  (SELECT id from genres WHERE name = 'Platformer')
 );
 
 INSERT INTO games_platforms (game_id, platform_id)

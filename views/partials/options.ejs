@@ -1,0 +1,4 @@
+<% if (locals.category) {%>
+    <% for (const item of category) {%>
+    <option value="<%= item.name %>"> <%= item.name  %></option>
+<% }} %>
