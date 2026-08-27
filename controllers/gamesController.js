@@ -17,25 +17,22 @@ async function addGameGet(req, res){
 
 
 async function addGamePost(req, res){
-    const {gameName, gameDescription, genre, platform, developer} = req.body;
-    await db.addNewGame(gameName, gameDescription);
-    for (category of [{value: genre, name: "genre"}, {value: platform, name: "platform"}, {value: developer, name: "developer"}]){
+    await db.addNewGame(req.body.gameName, req.body.gameDescription);
+    for (category of [{value: req.body.genre, name: "genre"}, {value: req.body.platform, name: "platform"}, {value: req.body.developer, name: "developer"}]){
+        if (!category.value){
+            continue;
+        }
         if(Array.isArray(category.value)){
         for (item of category.value){
-            console.log(item)
-            if (item !== "" || item === undefined){
-                await db.addRelation(`games_${category.name}s`,`${category.name}`, gameName, `${category.name}s`, item)
+            if (item !== ""){
+                await db.addRelation(`games_${category.name}s`,`${category.name}`, req.body.gameName, `${category.name}s`, item)
             }
         }
     }
-    else {
-        if (category.value !== ""){
-            console.log(category.value)
-             await db.addRelation(`games_${category.name}s`,`${category.name}`, gameName, `${category.name}s`, category.value)
+        else {
+              await db.addRelation(`games_${category.name}s`,`${category.name}`, req.body.gameName, `${category.name}s`, category.value)
         }
     }
-    }
-    console.log(req.body)
     res.redirect("/");
 }
 

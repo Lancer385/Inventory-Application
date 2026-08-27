@@ -6,21 +6,21 @@ const SQL = `
 DROP TABLE IF EXISTS games, genres, developers, platforms, games_genres, games_platforms, games_developers;
 CREATE TABLE games (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  name TEXT NOT NULL,
+  name TEXT NOT NULL UNIQUE,
   description TEXT
 );
 CREATE TABLE genres (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  name TEXT NOT NULL
+  name TEXT NOT NULL UNIQUE
 );
 CREATE TABLE developers (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  name TEXT NOT NULL
+  name TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE platforms (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  name TEXT NOT NULL
+  name TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE games_genres (

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Document</title>
+</head>
+<body>
+    <form action="/newCategory" method="post">
+        <label for="genres">Genre Name: </label>
+        <input type="checkbox" id="genre" class="category">
+        <input name= "genres" type="text" id="genreInput" disabled>
+        <label for="platforms">Platform Name: </label>
+        <input type="checkbox" id="platform" class="category">
+        <input name= "platforms" type="text" id="platformInput" disabled>
+        <label for="developers">Developer: </label>
+        <input type="checkbox"  id="developer" class="category">
+        <input name= "developers" type="text" id="developerInput" disabled>
+        <button type="submit">Submit</button>
+    </form>
+    <%- include("partials/toggleSelect") %>
+</body>
+
+</html>

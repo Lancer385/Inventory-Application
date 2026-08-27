@@ -1,9 +1,6 @@
 const pool  = require('./pool');
 
 
-async function getGames(){
-    
-}
 async function getAllGames(){
     const [games_platforms, games_genres, games_developers] = await Promise.all([
         pool.query('SELECT games.id AS "gameID", games.name AS "gameName" ,games.description AS "gameDescription",platforms.name AS platforms FROM games JOIN games_platforms ON games.id = games_platforms.game_id JOIN platforms ON platforms.id = platform_id'),
@@ -41,8 +38,8 @@ async function addNewGame(name, description = ""){
     await pool.query("INSERT INTO games (name, description) VALUES ($1, $2)", [name, description]);
 };
 
-async function addNewCategory(tableName, column, name){
-    await pool.query(`INSERT INTO ${tableName} (${column}) VALUES ($1)`, [name]);
+async function addNewCategory(tableName, name){
+    await pool.query(`INSERT INTO ${tableName} (name) VALUES ($1)`, [name]);
 };
 
 async function addRelation(junctionName,category, gameName, tableName, item){
@@ -64,5 +61,6 @@ module.exports = {
     getAllGames,
     getCategories,
     addNewGame,
-    addRelation
+    addRelation,
+    addNewCategory
 }

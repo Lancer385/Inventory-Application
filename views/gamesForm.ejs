@@ -14,36 +14,25 @@
         <input type="text" name="gameDescription" id="gameDescription">
         <label for="genre">Genre: </label>
         <input type="checkbox" id="genre" class="category">
-        <select name="genre" id="genreSelect" disabled multiple>
+        <select name="genre" id="genreInput" disabled multiple>
             <option value="">-- Choose a genre --</option>
             <%- include("partials/options", { category: categories[1].value }) %>
         </select>
         <label for="platform">Platform: </label>
         <input type="checkbox" id="platform" class="category">
-        <select name="platform" id="platformSelect" disabled multiple>
+        <select name="platform" id="platformInput" disabled multiple>
             <option value="">-- Choose a platform --</option>
             <%- include("partials/options", { category: categories[0].value }) %>
         </select>
         <label for="developer">Developer: </label>
         <input type="checkbox"  id="developer" class="category">
-        <select name="developer" id="developerSelect" disabled multiple>
+        <select name="developer" id="developerInput" disabled multiple>
             <option value="">-- Choose a developer --</option>
             <%- include("partials/options", { category: categories[2].value }) %>
         </select>
         <button type="submit">Submit</button>
     </form>
+    <%- include("partials/toggleSelect") %>
 </body>
-    <script>
-    const categories = document.querySelectorAll('.category');
-    console.log(categories)
-    for (const category of categories){
-        category.addEventListener("click", () => {
-        const id = category.id;
-        const select = document.querySelector(`#${id}Select`);
-        console.log(select)
-        select.disabled? select.disabled = false : select.disabled = true;
-     })
-    }
-    </script>
-    
+     
 </html>
