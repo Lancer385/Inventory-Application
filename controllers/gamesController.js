@@ -2,11 +2,7 @@ const db = require("../db/query");
 
 
 async function gamesGet(req, res){
-    const [platforms, genres, developers] =  await db.getAllGames();
-    platforms.push(...genres)
-    platforms.push(...developers)
-    const games = combine(platforms);
-    console.log(games)
+    const games =  await db.getAllGames();
     res.render("games", { games: games });
 };
 
@@ -39,31 +35,5 @@ async function addGamePost(req, res){
 module.exports = {
     gamesGet,
     addGameGet,
-    addGamePost
-}
-    
-
-
-function combine(arr, genres = "genres", platforms = "platforms", developers = "developers") {
-    console.log(arr)
-        const result = arr.reduce((acc, currentItem) => {
-        const condition = acc.find(item => item.gameID === currentItem.gameID );
-        if (!condition) {
-        const newCurr = {
-            gameID: currentItem.gameID,
-            gameName: currentItem.gameName,
-            gameDescription: currentItem.gameDescription,
-            [platforms]: currentItem[platforms]? [currentItem[platforms]] : [],
-            [genres]: currentItem[genres]? [currentItem[genres]] : [],
-            [developers]: currentItem[developers]? [currentItem[developers]] : [],
-        }
-        return acc.concat([newCurr])
-        } else {
-            currentItem[genres] && condition[genres].push(currentItem[genres]);
-            currentItem[platforms] && condition[platforms].push(currentItem[platforms]);
-            currentItem[developers] && condition[developers].push(currentItem[developers]);
-            return acc;
-        }
-    }, [])
-    return result;
+    addGamePost,
 }
