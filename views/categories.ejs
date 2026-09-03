@@ -7,11 +7,10 @@
 </head>
 <body>
     <% if (locals.categories) {%>
-        <% for(const category of categories) { %>
-            <% console.log(category) %>
+        <% for(const [name, value] of Object.entries(categories)) { %>
             <%- include("partials/category", {
-                name: category.name,
-                categories: category.value
+                name: name,
+                categories: value
             })  %>
     <% }} %>
 </body>

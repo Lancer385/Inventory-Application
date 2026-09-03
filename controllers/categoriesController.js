@@ -13,7 +13,6 @@ async function addCategoryGet(req, res){
 async function addCategoryPost(req,res){
     const {platforms, genres, developers} = req.body;
     for (category of [{tableName: "platforms", value: platforms}, {tableName: "genres", value: genres}, {tableName: "developers", value: developers}]){
-         console.log(category)
         if (!category.value){
             continue;
         }

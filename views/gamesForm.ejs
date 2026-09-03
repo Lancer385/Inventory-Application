@@ -11,24 +11,24 @@
         <label for="gameName">Game Name: </label>
         <input type="text" name="gameName" id="gameName" required>
         <label for="gameDescription">Game Description: </label>
-        <input type="text" name="gameDescription" id="gameDescription">
+        <textarea name="gameDescription" id="gameDescription"></textarea>
         <label for="genre">Genre: </label>
         <input type="checkbox" id="genre" class="category">
         <select name="genre" id="genreInput" disabled multiple>
             <option value="">-- Choose a genre --</option>
-            <%- include("partials/options", { category: categories[1].value }) %>
+            <%- include("partials/options", { category: categories.genres }) %>
         </select>
         <label for="platform">Platform: </label>
         <input type="checkbox" id="platform" class="category">
         <select name="platform" id="platformInput" disabled multiple>
             <option value="">-- Choose a platform --</option>
-            <%- include("partials/options", { category: categories[0].value }) %>
+            <%- include("partials/options", { category: categories.platforms }) %>
         </select>
         <label for="developer">Developer: </label>
         <input type="checkbox"  id="developer" class="category">
         <select name="developer" id="developerInput" disabled multiple>
             <option value="">-- Choose a developer --</option>
-            <%- include("partials/options", { category: categories[2].value }) %>
+            <%- include("partials/options", { category: categories.developers }) %>
         </select>
         <button type="submit">Submit</button>
     </form>

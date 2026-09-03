@@ -28,7 +28,7 @@ async function queryGame(gameID = null) {
                    ${clause}`, id),
     ]);
     const result = [...platforms.rows, ...genres.rows, ...developers.rows]
-    return combineGame(result);
+    return gameID? combineGame(result)[0] :combineGame(result);
 }
 
 const getAllGames = () => queryGame();
@@ -45,9 +45,7 @@ async function queryCategory(categoryName, categoryID = null){
     const clause = categoryID ? `WHERE id = 1$`: ``;
     const id = categoryID ? [categoryID] : [];
     const category = await pool.query(`SELECT id, name FROM ${categoryName} ${clause}`, id);
-    console.log(category.rows)
     return category.rows;
-
 }
 
 const getCategory = (categoryName) => queryCategory(categoryName);
@@ -74,26 +72,20 @@ async function addRelation(junctionName,category, gameName, tableName, item){
 
 async function removeRelation(junctionName, category, gameID, categoryID){
  await pool.query(
-    `DELETE FROM ${junctionName} WHERE game_id = $1 AND ${category}_id = $2
+    `DELETE FROM ${junctionName} WHERE game_id = $1 AND ${category}_id = $2;
     `, [gameID, categoryID]
  )
 }
 
-async function updateGameName(id, name){
-    `UPDATE FROM games
-     SET name = $1 WHERE id = $2
-    `, [name, id]
-}
-async function updateGameDesc(id,description){
-    `UPDATE FROM games
-     SET description = $1 WHERE id = $2
-    `, [description, id]
+async function updateGame(id, name, description){
+    await pool.query("UPDATE games SET name = $1, description = $2 WHERE id = $3", [name, description, id])
 }
 
+
 async function updateCategoryName(categoryTable, id, name){
-    `UPDATE FROM ${categoryTable}
-     SET name = $1 WHERE id = $2
-    `, [name, id]
+    await pool.query(`UPDATE FROM ${categoryTable}
+     SET name = $1 WHERE id = $2;
+    `, [name, id])
 }
 
 module.exports = {
@@ -104,8 +96,7 @@ module.exports = {
     addRelation,
     addNewCategory,
     removeRelation,
-    updateGameName,
-    updateGameDesc,
+    updateGame,
     updateCategoryName,
 }
 

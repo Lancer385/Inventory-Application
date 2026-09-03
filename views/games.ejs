@@ -8,11 +8,8 @@
 <body>
     <div>
         <% if (locals.games){ %>
-        <% for (const {gameID, gameName} of games){ %>
-            <%- include("partials/game", {
-                id: gameID,
-                name: gameName,
-            })  %>
+        <% for (const game of games){ %>
+            <%- include("partials/game", {game: game})  %>
         <% }} %>
     </div>
 </body>

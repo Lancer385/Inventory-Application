@@ -32,8 +32,20 @@ async function addGamePost(req, res){
     res.redirect("/");
 }
 
+async function editGameGet(req,res){
+    const game = await db.getGame(req.params.id);
+    res.render("gameEdit", {game: game})
+}
+
+async function editGamePost(req, res){
+    const {gameId, gameName, gameDescription} = req.body;
+    await db.updateGame(gameId, gameName, gameDescription);
+    res.redirect(`/game/edit/` + gameId);
+}
 module.exports = {
     gamesGet,
     addGameGet,
     addGamePost,
+    editGameGet,
+    editGamePost
 }
