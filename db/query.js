@@ -7,28 +7,39 @@ async function queryGame(gameID = null) {
 
     const [platforms, genres, developers] = await Promise.all([
         pool.query(`SELECT games.id AS "gameID", games.name AS "gameName", games.description AS "gameDescription",
-                   platforms.name AS platforms 
+                   ARRAY_AGG(platforms.name) AS platforms 
                    FROM games 
                    LEFT JOIN games_platforms ON games.id = games_platforms.game_id 
                    LEFT JOIN platforms ON platforms.id = platform_id
-                   ${clause}`, id),
+                   ${clause}
+                   GROUP BY games.id
+                   ORDER BY games.id
+                   `, id),
 
         pool.query(`SELECT games.id AS "gameID", games.name AS "gameName", games.description AS "gameDescription",
-                   genres.name AS genres 
+                   ARRAY_AGG(genres.name) AS genres 
                    FROM games 
                    LEFT JOIN games_genres ON games.id = games_genres.game_id 
                    LEFT JOIN genres ON genres.id = genre_id
-                   ${clause}`, id),
+                   ${clause}
+                   GROUP BY games.id
+                   ORDER BY games.id`, id),
 
         pool.query(`SELECT games.id AS "gameID", games.name AS "gameName", games.description AS "gameDescription",
-                   developers.name AS developers 
-                   FROM games 
+                   ARRAY_AGG(developers.name) AS developers
+                   FROM games
                    LEFT JOIN games_developers ON games.id = games_developers.game_id 
                    LEFT JOIN developers ON developers.id = developer_id
-                   ${clause}`, id),
+                   ${clause}
+                   GROUP BY games.id
+                   ORDER BY games.id`, id),
     ]);
-    const result = [...platforms.rows, ...genres.rows, ...developers.rows]
-    return gameID? combineGame(result)[0] :combineGame(result);
+    const combinedGames = [...platforms.rows, ...genres.rows, ...developers.rows];
+    const result = combinedGames.reduce((acc, current) => {
+        acc[current.gameID] = { ...acc[current.gameID], ...current };
+        return acc;
+        }, {});
+    return gameID? Object.values(result[0]): Object.values(result);
 }
 
 const getAllGames = () => queryGame();
@@ -44,7 +55,11 @@ async function getCategories() {
 async function queryCategory(categoryName, categoryID = null){
     const clause = categoryID ? `WHERE id = 1$`: ``;
     const id = categoryID ? [categoryID] : [];
-    const category = await pool.query(`SELECT id, name FROM ${categoryName} ${clause}`, id);
+    const category = await pool.query(`
+        SELECT games.id AS "gameID", ${categoryName}_id, ${categoryName}s.name AS ${categoryName}s,games.name AS "gameName",
+                   FROM games
+                   LEFT JOIN games_${categoryName}s ON games.id = games_${categoryName}s.game_id 
+                   LEFT JOIN ${categoryName}s ON ${categoryName}s.id = ${categoryName}_id; ${clause}`, id);
     return category.rows;
 }
 
@@ -100,29 +115,5 @@ module.exports = {
     updateCategoryName,
 }
 
-// helper functions
-function combineGame(arr) {
-        const result = arr.reduce((acc, {gameID, gameName, gameDescription, platforms, genres, developers}) => {
-        acc[gameID] ??= {
-            gameID: gameID,
-            gameName: gameName,
-            gameDescription: gameDescription,
-            platforms: [],
-            genres: [],
-            developers: [],
-        }
-        
-       for (const category of [{name: "platforms", value: platforms}, {name: "genres", value: genres}, {name: "developers", value: developers}]){
-        if (category.value){
-        if (Array.isArray(category.value)){
-            acc[gameID][category.name].push(...category.value)
-        }   
-        else {
-            acc[gameID][category.name].push(category.value);
-        }
-        }
-       }
-       return acc
-    }, {})
-    return Object.values(result);
-}
+
+getAllGames()
