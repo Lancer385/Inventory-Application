@@ -1,10 +1,11 @@
 <div>
-    <%= name.toUpperCase() %> 
+    <% if(categories.platforms){ %>
+        <%=name.toUpperCase() %>
+    <% }; %> 
     <% for (category of categories) {%>
-
         <div>
         <% if (category) { %>
-        <%= category %>
+        <%= category.name %>
         <% } %>
         </div>
     <% }%>

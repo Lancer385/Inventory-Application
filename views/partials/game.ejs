@@ -1,6 +1,17 @@
 <li>
     <div class="game">
-        <a href=<%=`game/edit/${game.gameID}`%>>Edit</a>
+        <a href=<%=`game/edit/${game.gameID}`%>>View</a>
     </div>
     <%= game.gameID %>, <%= game.gameName %>
+    <div class="categories">
+        <div class="categoriesView">
+            <% for (const category of [{name: "platforms", value: game.platforms}, {name: "genres", value: game.genres}, {name: "developers", value: game.developers}]){ %>
+                <% if (category.value.length !== 0) { %>
+                    <%- include("relatedCategory", {
+                        name: category.name,
+                        categories: category.value
+                    }) %>
+            <% }}%>
+        </div>
+</div>
 </li>

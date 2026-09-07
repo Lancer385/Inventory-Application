@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <% if (locals.category) { %>
+        <div class="categories">
+            <% for (const item of category)  { %>   
+                <div> <%= item.name %> </div>
+                <a href="/<%= categoryName %>/edit/<%= item.id %>">edit</a>
+            <% } %>
+        </div>
+    <% } %>
+</body>
+</html>

@@ -3,7 +3,7 @@ const db = require("../db/query");
 
 async function categoriesGet(req, res){
    const categories = await db.getCategories();
-   res.render("categories", { categories: categories})
+   res.render("viewCategories", { categories: categories})
 }
 
 async function addCategoryGet(req, res){
@@ -20,12 +20,31 @@ async function addCategoryPost(req,res){
         await db.addNewCategory(category.tableName, category.value);
     }
      res.redirect("/");
+};
+async function viewCategoryGet(req, res){
+    const category = await db.getCategory(req.params.category);
+    res.render("viewCategory", {category: category, categoryName: req.params.category});
+};
+
+async function editCategoryItemGet(req, res){
+    const categoryItem = await db.getCategoryItem(req.params.category, req.params.id);
+    res.render("editCategoryItem", {item: categoryItem, categoryName: req.params.category});
+
+}
+
+async function editCategoryItemPost(req,res){
+    const {name} = req.body;
+    await db.updateCategoryName(req.params.category, req.params.id, name);
+    res.redirect(`/${req.params.category}/edit/${req.params.id}`);
 }
 module.exports = {
     categoriesGet,
     addCategoryGet,
-    addCategoryPost
-}
+    addCategoryPost,
+    viewCategoryGet,
+    editCategoryItemGet,
+    editCategoryItemPost
+};
     
 
 

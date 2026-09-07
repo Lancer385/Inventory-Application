@@ -3,7 +3,7 @@ const db = require("../db/query");
 
 async function gamesGet(req, res){
     const games =  await db.getAllGames();
-    res.render("games", { games: games });
+    res.render("viewGames", { games: games });
 };
 
 async function addGameGet(req, res){
@@ -34,13 +34,13 @@ async function addGamePost(req, res){
 
 async function editGameGet(req,res){
     const game = await db.getGame(req.params.id);
-    res.render("gameEdit", {game: game})
+    res.render("editGames", {game: game})
 }
 
 async function editGamePost(req, res){
-    const {gameId, gameName, gameDescription} = req.body;
-    await db.updateGame(gameId, gameName, gameDescription);
-    res.redirect(`/game/edit/` + gameId);
+    const {gameName, gameDescription} = req.body;
+    await db.updateGame(req.params.id, gameName, gameDescription);
+    res.redirect(`/game/edit/` + req.params.id);
 }
 module.exports = {
     gamesGet,

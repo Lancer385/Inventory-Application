@@ -7,7 +7,11 @@ async function queryGame(gameID = null) {
 
     const [platforms, genres, developers] = await Promise.all([
         pool.query(`SELECT games.id AS "gameID", games.name AS "gameName", games.description AS "gameDescription",
-                   ARRAY_AGG(platforms.name) AS platforms 
+                   json_agg(
+                    json_build_object(
+                    'id', platforms.id,
+                    'name', platforms.name)
+                    ORDER BY platforms.id) AS platforms 
                    FROM games 
                    LEFT JOIN games_platforms ON games.id = games_platforms.game_id 
                    LEFT JOIN platforms ON platforms.id = platform_id
@@ -17,7 +21,11 @@ async function queryGame(gameID = null) {
                    `, id),
 
         pool.query(`SELECT games.id AS "gameID", games.name AS "gameName", games.description AS "gameDescription",
-                   ARRAY_AGG(genres.name) AS genres 
+                   json_agg(
+                    json_build_object(
+                    'id', genres.id,
+                    'name', genres.name)
+                    ORDER BY genres.id) AS genres 
                    FROM games 
                    LEFT JOIN games_genres ON games.id = games_genres.game_id 
                    LEFT JOIN genres ON genres.id = genre_id
@@ -26,7 +34,11 @@ async function queryGame(gameID = null) {
                    ORDER BY games.id`, id),
 
         pool.query(`SELECT games.id AS "gameID", games.name AS "gameName", games.description AS "gameDescription",
-                   ARRAY_AGG(developers.name) AS developers
+                   json_agg(
+                    json_build_object(
+                    'id', developers.id,
+                    'name', developers.name)
+                    ORDER BY developers.id) AS developers
                    FROM games
                    LEFT JOIN games_developers ON games.id = games_developers.game_id 
                    LEFT JOIN developers ON developers.id = developer_id
@@ -39,7 +51,7 @@ async function queryGame(gameID = null) {
         acc[current.gameID] = { ...acc[current.gameID], ...current };
         return acc;
         }, {});
-    return gameID? Object.values(result[0]): Object.values(result);
+    return gameID? Object.values(result)[0]: Object.values(result);
 }
 
 const getAllGames = () => queryGame();
@@ -52,19 +64,22 @@ async function getCategories() {
     return {platforms: platforms, genres: genres, developers: developers}
 }
 
-async function queryCategory(categoryName, categoryID = null){
-    const clause = categoryID ? `WHERE id = 1$`: ``;
-    const id = categoryID ? [categoryID] : [];
-    const category = await pool.query(`
-        SELECT games.id AS "gameID", ${categoryName}_id, ${categoryName}s.name AS ${categoryName}s,games.name AS "gameName",
-                   FROM games
-                   LEFT JOIN games_${categoryName}s ON games.id = games_${categoryName}s.game_id 
-                   LEFT JOIN ${categoryName}s ON ${categoryName}s.id = ${categoryName}_id; ${clause}`, id);
-    return category.rows;
+async function queryCategory(categoryName, categoryID = null){ 
+    const clause = categoryID ? `HAVING ${categoryName}.id = $1` : '';
+    const id = Number(categoryID) ? [Number(categoryID)] : [];
+    const categoryNameSingular = categoryName.slice(0, categoryName.length - 1);
+    const category = await pool.query(`SELECT ${categoryName}.id as "id",  ${categoryName}.name AS "name",
+                   json_agg(json_build_object('id', games.id, 'name', games.name) ORDER BY games.id) AS "games"
+                   FROM ${categoryName}
+                   LEFT JOIN games_${categoryName} ON ${categoryName}.id = games_${categoryName}.${categoryNameSingular}_id 
+                   LEFT JOIN games ON games.id = game_id
+                   GROUP BY ${categoryName}.id
+                   ${clause}`, id);
+    return Number(categoryID)? category.rows[0] : category.rows;
 }
 
-const getCategory = (categoryName) => queryCategory(categoryName);
-const getCategoryItem = (categoryName, id) => queryCategory(categoryName, id);
+const getCategory = (category) => queryCategory(category);
+const getCategoryItem = (category, id)  => queryCategory(category, id);
 
 async function addNewGame(name, description = ""){
     await pool.query("INSERT INTO games (name, description) VALUES ($1, $2)", [name, description]);
@@ -98,7 +113,7 @@ async function updateGame(id, name, description){
 
 
 async function updateCategoryName(categoryTable, id, name){
-    await pool.query(`UPDATE FROM ${categoryTable}
+    await pool.query(`UPDATE ${categoryTable}
      SET name = $1 WHERE id = $2;
     `, [name, id])
 }
@@ -107,13 +122,13 @@ module.exports = {
     getAllGames,
     getGame,
     getCategories,
+    getCategory,
     addNewGame,
     addRelation,
     addNewCategory,
     removeRelation,
     updateGame,
     updateCategoryName,
+    getCategoryItem
 }
 
-
-getAllGames()
