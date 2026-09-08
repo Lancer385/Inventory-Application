@@ -64,10 +64,10 @@ async function getCategories() {
     return {platforms: platforms, genres: genres, developers: developers}
 }
 
-async function queryCategory(categoryName, categoryID = null){ 
+async function queryCategory(categoryName, categoryNameSingular, categoryID = null){ 
     const clause = categoryID ? `HAVING ${categoryName}.id = $1` : '';
-    const id = Number(categoryID) ? [Number(categoryID)] : [];
-    const categoryNameSingular = categoryName.slice(0, categoryName.length - 1);
+    const id = categoryID ? [categoryID] : [];
+    
     const category = await pool.query(`SELECT ${categoryName}.id as "id",  ${categoryName}.name AS "name",
                    json_agg(json_build_object('id', games.id, 'name', games.name) ORDER BY games.id) AS "games"
                    FROM ${categoryName}
@@ -75,11 +75,11 @@ async function queryCategory(categoryName, categoryID = null){
                    LEFT JOIN games ON games.id = game_id
                    GROUP BY ${categoryName}.id
                    ${clause}`, id);
-    return Number(categoryID)? category.rows[0] : category.rows;
+    return categoryID? category.rows[0] : category.rows;
 }
 
-const getCategory = (category) => queryCategory(category);
-const getCategoryItem = (category, id)  => queryCategory(category, id);
+const getCategory = (category, singular) => queryCategory(category, singular);
+const getCategoryItem = (category, singular, id)  => queryCategory(category, singular, id);
 
 async function addNewGame(name, description = ""){
     await pool.query("INSERT INTO games (name, description) VALUES ($1, $2)", [name, description]);
@@ -100,9 +100,9 @@ async function addRelation(junctionName,category, gameName, tableName, item){
     ,[gameName, item]);
 };
 
-async function removeRelation(junctionName, category, gameID, categoryID){
+async function removeRelation(category, singular, gameID, categoryID){
  await pool.query(
-    `DELETE FROM ${junctionName} WHERE game_id = $1 AND ${category}_id = $2;
+    `DELETE FROM games_${category} WHERE game_id = $1 AND ${singular}_id = $2;
     `, [gameID, categoryID]
  )
 }

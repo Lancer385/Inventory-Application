@@ -7,13 +7,17 @@
 </head>
 <body>
     <% if (locals.item) { %>
-        <% console.log(item) %>
         <p><%= item.name %> </p>
         <form action="/<%= categoryName %>/edit/<%= item.id %>" method="post" onsubmit="return confirm('Are you sure you want to submit this form?')">
             <label for="gameName"><%= categoryName %> Name: </label>
             <input type="text" name="name" id="name" value="<%= item.name %>">
             <button type="submit">Change</button>
         </form>
+            <% for (const game of item.games) { %>
+                <% console.log(game) %>
+                <%- include("partials/deleteRelation", {categoryName: categoryName, item: item, game: game}) %>
+            <% } %>
     <% } %>
 </body>
+    
 </html>

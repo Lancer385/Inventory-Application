@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const { indexGet } = require("../controllers/indexController");
 const { gamesGet, addGameGet, addGamePost, editGameGet, editGamePost} = require("../controllers/gamesController");
-const { categoriesGet, addCategoryGet, addCategoryPost, viewCategoryGet, editCategoryItemGet, editCategoryItemPost } = require("../controllers/categoriesController");
+const { categoriesGet, addCategoryGet, addCategoryPost, viewCategoryGet, editCategoryItemGet, editCategoryItemPost, deleteRelatedGames } = require("../controllers/categoriesController");
 const router = Router()
 
 
@@ -18,4 +18,5 @@ router.post("/game/edit/:id", editGamePost);
 router.get("/:category/view/", viewCategoryGet);
 router.get("/:category/edit/:id", editCategoryItemGet);
 router.post("/:category/edit/:id", editCategoryItemPost);
+router.post("/:category/deleteRelation/:id", deleteRelatedGames);
 module.exports = router

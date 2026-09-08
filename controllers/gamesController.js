@@ -14,12 +14,12 @@ async function addGameGet(req, res){
 
 async function addGamePost(req, res){
     await db.addNewGame(req.body.gameName, req.body.gameDescription);
-    for (category of [{value: req.body.genre, name: "genre"}, {value: req.body.platform, name: "platform"}, {value: req.body.developer, name: "developer"}]){
+    for (const category of [{value: req.body.genre, name: "genre"}, {value: req.body.platform, name: "platform"}, {value: req.body.developer, name: "developer"}]){
         if (!category.value){
             continue;
         }
         if(Array.isArray(category.value)){
-        for (item of category.value){
+        for (const item of category.value){
             if (item !== ""){
                 await db.addRelation(`games_${category.name}s`,`${category.name}`, req.body.gameName, `${category.name}s`, item)
             }
