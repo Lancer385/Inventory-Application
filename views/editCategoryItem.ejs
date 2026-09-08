@@ -13,10 +13,6 @@
             <input type="text" name="name" id="name" value="<%= item.name %>">
             <button type="submit">Change</button>
         </form>
-            <% for (const game of item.games) { %>
-                <% console.log(game) %>
-                <%- include("partials/deleteRelation", {categoryName: categoryName, item: item, game: game}) %>
-            <% } %>
     <% } %>
 </body>
     

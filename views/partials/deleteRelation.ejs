@@ -1,17 +1,17 @@
-<% if (locals.game.id) {%>
+<% if (locals.item.id) {%>
     <div class="relatedGame">
-        <%= game.name %><button data-id="<%= game.id %>">remove</button>
+        <%= item.name %><button data-id="<%= item.id %>" data-category="<%= name %>">remove</button>
     </div>
     <script>
-       document.querySelector(`[data-id="<%= game.id %>"]`).addEventListener("click", async () => {
-            const url = `/<%= categoryName %>/deleteRelation/<%= game.id %>`
+       document.querySelector(`[data-id="<%= item.id %>"][data-category="<%= name %>"]`).addEventListener("click", async () => {
+            const url = `/<%= categoryName %>/deleteRelation/`
             const response = await fetch(url, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({id: '<%= item.id %>' })
+                body: JSON.stringify({gameId: Number('<%= gameID %>'), itemId: Number(`<%= item.id%>`) })
             })
             if (response.ok){
-            document.querySelector(`[data-id="<%= game.id %>"]`).closest(".relatedGame").remove();
+            document.querySelector(`[data-id="<%= item.id %>"]`).closest(".relatedGame").remove();
             }
         })
        

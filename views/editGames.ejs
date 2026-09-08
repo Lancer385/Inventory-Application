@@ -21,6 +21,9 @@
                 <button type="submit">Change</button>
             </form>
         </div>
+        <% for (const category of [{name: "platforms", value: game.platforms}, {name: "genres", value: game.genres}, {name: "developers", value: game.developers}]) { %>
+            <%- include("partials/editRelatedCategory", {gameID: game.gameID, name: category.name, category: category.value}) %>
+        <% } %>
     </div>
 
     <% } %>

@@ -42,20 +42,14 @@ async function editCategoryItemPost(req,res){
     res.redirect(`/${req.params.category}/edit/${req.params.id}`);
 }
 
-async function deleteRelatedGames(req, res){
-    const categoryNameSingular = req.params.category.slice(0, req.params.category.length - 1);
-    // the id from the body is the category item id, where is the id from the parameter is the game id.
-    await db.removeRelation(req.params.category, categoryNameSingular,Number(req.params.id),Number(req.body.id));
-    res.json({ success: true })
-}
+
 module.exports = {
     categoriesGet,
     addCategoryGet,
     addCategoryPost,
     viewCategoryGet,
     editCategoryItemGet,
-    editCategoryItemPost,
-    deleteRelatedGames
+    editCategoryItemPost
 };
     
 

@@ -42,10 +42,19 @@ async function editGamePost(req, res){
     await db.updateGame(req.params.id, gameName, gameDescription);
     res.redirect(`/game/edit/` + req.params.id);
 }
+
+
+async function deleteRelatedCategory(req, res){
+    const categoryNameSingular = req.params.category.slice(0, req.params.category.length - 1);
+    const {gameId, itemId} = req.body;
+    await db.removeRelation(req.params.category, categoryNameSingular, gameId, itemId);
+    res.json({ success: true })
+}
 module.exports = {
     gamesGet,
     addGameGet,
     addGamePost,
     editGameGet,
-    editGamePost
+    editGamePost,
+    deleteRelatedCategory
 }
