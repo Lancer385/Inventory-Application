@@ -13,23 +13,25 @@ async function addGameGet(req, res){
 
 
 async function addGamePost(req, res){
-    await db.addNewGame(req.body.gameName, req.body.gameDescription);
-    for (const category of [{value: req.body.genres, name: "genre"}, {value: req.body.platforms, name: "platform"}, {value: req.body.developers, name: "developer"}]){
-        if (!category.value){
+    const {gameName, gameDescription, ...categories} = req.body
+    await db.addNewGame(gameName, gameDescription);
+    for (const [name, category] of Object.entries(categories)){
+        const singular = name.slice(0, name.length - 1);
+        if (!category[name]){
             continue;
         }
-        if(Array.isArray(category.value)){
-        for (const item of category.value){
-            if (item !== ""){
-                await db.addRelation(`games_${category.name}s`,`${category.name}`, req.body.gameName, `${category.name}s`, item)
+        if(Array.isArray(category)){
+            for (const item of category){
+                if (item !== ""){
+                    await db.addRelation(singular, gameName, item);
+                }
             }
         }
-    }
         else {
-              await db.addRelation(`games_${category.name}s`,`${category.name}`, req.body.gameName, `${category.name}s`, category.value)
+              await db.addRelation(singular, gameName, category);
         }
     }
-    res.redirect("/");
+    res.redirect("/games");
 }
 
 async function editGameGet(req,res){
@@ -43,6 +45,42 @@ async function editGamePost(req, res){
     res.redirect(`/game/edit/` + req.params.id);
 }
 
+async function assignCategoryGet(req, res) {
+    const categories = await db.getCategories();
+    const { gameID, gameName, gameDescription, ...assignedCategories } = await db.getGame(req.params.gameId);
+    const matched = {}
+    for (const category of Object.keys(assignedCategories)){
+        let result = categories[category].filter(object1 => !assignedCategories[category].some(object2 => object1.id === object2.id));
+        if (result.length !== 0) {
+            matched[category] = result;
+        };
+    };
+     res.render("assignCategory", { gameId:gameID, gameName: gameName, gameDescription: gameDescription, categories: matched});
+}
+
+async function assignCategoryPost(req, res){
+    const gameName = req.params.gameName
+    for (const [name, category] of Object.entries(req.body)){
+        const singular = name.slice(0, name.length - 1);
+        if (!category){
+            continue;
+        }
+        if(Array.isArray(category)){
+            for (const item of category){
+                if (item !== ""){
+                    
+                    await db.addRelation(singular, gameName, item);
+                }
+            }
+        }
+        else {
+            console
+              await db.addRelation(singular, gameName, category);
+        }
+    } 
+    res.redirect("/games");
+}
+
 
 async function deleteRelatedCategory(req, res){
     const categoryNameSingular = req.params.category.slice(0, req.params.category.length - 1);
@@ -50,11 +88,14 @@ async function deleteRelatedCategory(req, res){
     await db.removeRelation(req.params.category, categoryNameSingular, gameId, itemId);
     res.json({ success: true })
 }
+
 module.exports = {
     gamesGet,
     addGameGet,
     addGamePost,
     editGameGet,
     editGamePost,
-    deleteRelatedCategory
+    deleteRelatedCategory,
+    assignCategoryGet,
+    assignCategoryPost
 }

@@ -89,12 +89,12 @@ async function addNewCategory(tableName, name){
     await pool.query(`INSERT INTO ${tableName} (name) VALUES ($1)`, [name]);
 };
 
-async function addRelation(junctionName,category, gameName, tableName, item){
+async function addRelation(category, gameName, item){
     await pool.query(
-        `INSERT INTO ${junctionName} (game_id, ${category}_id)
+        `INSERT INTO games_${category}s (game_id, ${category}_id)
             VALUES (
             (SELECT id FROM games WHERE name = $1),
-            (SELECT id FROM ${tableName} WHERE name = $2)
+            (SELECT id FROM ${category}s WHERE name = $2)
             )
         `
     ,[gameName, item]);

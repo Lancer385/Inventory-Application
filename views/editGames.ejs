@@ -7,6 +7,9 @@
 </head>
 <body>
     <% if (locals.game) { %>
+    <div class="assignCategories">
+        <a href="/<%= game.gameName %>/<%= game.gameID %>/assignCategories">add new category</a>
+    </div>
     <div class="games">
         <div class="view">
             <h1> <%= game.gameName %> </h1>

@@ -12,24 +12,13 @@
         <input type="text" name="gameName" id="gameName" required>
         <label for="gameDescription">Game Description: </label>
         <textarea name="gameDescription" id="gameDescription"></textarea>
-        <label for="genre">Genre: </label>
-        <input type="checkbox" id="genre" class="category">
-            <fieldset id="genreInput" disabled>
-                <h2>-- Choose a genre --</h2>
-                <%- include("partials/options", { name: "genres", category: categories.genres }) %>
+        <% for (const [name, arr] of Object.entries(categories)) { %>
+            <label for="<%= name %>"> <%= name %> : </label>
+            <input type="checkbox" id="<%= name %>" class="category">
+            <fieldset id="<%= name %>Input" disabled>
+                <%- include("partials/options",  {name: name, category: arr}) %>
             </fieldset>
-        <label for="platform">Platform: </label>
-        <input type="checkbox" id="platform" class="category">
-            <fieldset id="platformInput" disabled>
-                <h2>-- Choose a platform --</h2>
-                <%- include("partials/options", { name: "platforms", category: categories.platforms }) %>
-            </fieldset>
-        <label for="developer">Developer: </label>
-        <input type="checkbox"  id="developer" class="category">
-            <fieldset id="developerInput" disabled>
-                <h2>-- Choose a developer --</h2>
-                <%- include("partials/options", { name: "developers", category: categories.developers }) %>
-            </fieldset>
+        <% } %>
         <button type="submit">Submit</button>
     </form>
     <%- include("partials/toggleSelect") %>
