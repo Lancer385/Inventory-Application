@@ -14,22 +14,22 @@
         <textarea name="gameDescription" id="gameDescription"></textarea>
         <label for="genre">Genre: </label>
         <input type="checkbox" id="genre" class="category">
-        <select name="genre" id="genreInput" disabled multiple>
-            <option value="">-- Choose a genre --</option>
-            <%- include("partials/options", { category: categories.genres }) %>
-        </select>
+            <fieldset id="genreInput" disabled>
+                <h2>-- Choose a genre --</h2>
+                <%- include("partials/options", { name: "genres", category: categories.genres }) %>
+            </fieldset>
         <label for="platform">Platform: </label>
         <input type="checkbox" id="platform" class="category">
-        <select name="platform" id="platformInput" disabled multiple>
-            <option value="">-- Choose a platform --</option>
-            <%- include("partials/options", { category: categories.platforms }) %>
-        </select>
+            <fieldset id="platformInput" disabled>
+                <h2>-- Choose a platform --</h2>
+                <%- include("partials/options", { name: "platforms", category: categories.platforms }) %>
+            </fieldset>
         <label for="developer">Developer: </label>
         <input type="checkbox"  id="developer" class="category">
-        <select name="developer" id="developerInput" disabled multiple>
-            <option value="">-- Choose a developer --</option>
-            <%- include("partials/options", { category: categories.developers }) %>
-        </select>
+            <fieldset id="developerInput" disabled>
+                <h2>-- Choose a developer --</h2>
+                <%- include("partials/options", { name: "developers", category: categories.developers }) %>
+            </fieldset>
         <button type="submit">Submit</button>
     </form>
     <%- include("partials/toggleSelect") %>

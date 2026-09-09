@@ -1,4 +1,4 @@
 <% if (locals.category) {%>
     <% for (const item of category) {%>
-    <option value="<%= item.name %>"> <%= item.name  %></option>
+    <input type="checkbox" name="<%= name  %>" value="<%= item.name %>"> <%= item.name  %></checkbox>
 <% }} %>

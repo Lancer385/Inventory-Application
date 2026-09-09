@@ -14,7 +14,7 @@ async function addGameGet(req, res){
 
 async function addGamePost(req, res){
     await db.addNewGame(req.body.gameName, req.body.gameDescription);
-    for (const category of [{value: req.body.genre, name: "genre"}, {value: req.body.platform, name: "platform"}, {value: req.body.developer, name: "developer"}]){
+    for (const category of [{value: req.body.genres, name: "genre"}, {value: req.body.platforms, name: "platform"}, {value: req.body.developers, name: "developer"}]){
         if (!category.value){
             continue;
         }
