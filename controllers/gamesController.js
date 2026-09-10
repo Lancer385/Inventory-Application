@@ -85,13 +85,20 @@ async function deleteRelatedCategory(req, res){
     res.json({ success: true })
 }
 
+
+async function removeGame(req, res){
+    const gameID = req.params.gameId;
+    await db.removeGame(Number(gameID));
+    res.redirect("/games")
+}
 module.exports = {
     gamesGet,
     addGameGet,
     addGamePost,
     editGameGet,
-    editGamePost,
-    deleteRelatedCategory,
+    editGamePost, 
     assignCategoryGet,
-    assignCategoryPost
+    assignCategoryPost,
+    deleteRelatedCategory,
+    removeGame
 }

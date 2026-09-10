@@ -107,14 +107,6 @@ async function addRelation(categoryName, gameName, item){
     ,[gameName, item]);
 };
 
-async function removeRelation(categoryName, gameID, categoryID){
-    const categoryNameSingular = singularMap[categoryName];
- await pool.query(
-    `DELETE FROM games_${categoryName} WHERE game_id = $1 AND ${categoryNameSingular}_id = $2;
-    `, [gameID, categoryID]
- )
-}
-
 async function updateGame(id, name, description){
     await pool.query("UPDATE games SET name = $1, description = $2 WHERE id = $3", [name, description, id])
 }
@@ -126,17 +118,36 @@ async function updateCategoryName(categoryTable, id, name){
     `, [name, id])
 }
 
+async function removeRelation(categoryName, gameID, categoryID){
+    const categoryNameSingular = singularMap[categoryName];
+ await pool.query(
+    `DELETE FROM games_${categoryName} WHERE game_id = $1 AND ${categoryNameSingular}_id = $2;
+    `, [gameID, categoryID]
+ );
+};
+
+async function removeGame(gameId){
+    await pool.query(
+        `DELETE FROM games WHERE games.id = $1`, [gameId]);
+};
+
+async function removeCategoryItem(categoryName, itemId){
+    await pool.query(`DELETE FROM ${categoryName} WHERE ${categoryName}.id = $1`, [itemId]);
+};
+
 module.exports = {
     getAllGames,
     getGame,
     getCategories,
     getCategory,
+    getCategoryItem,
     addNewGame,
     addRelation,
     addNewCategory,
-    removeRelation,
     updateGame,
     updateCategoryName,
-    getCategoryItem
+    removeRelation,
+    removeGame,
+    removeCategoryItem
 }
 

@@ -7,6 +7,7 @@
 </head>
 <body>
     <% if (locals.gameName) { %>
+    <form action="/game/delete/<%= gameID %>" method="post"><button type="submit">Delete</button></form>
     <div class="assignCategories">
         <a href="/<%= gameName %>/<%= gameID %>/assignCategories">add new category</a>
     </div>

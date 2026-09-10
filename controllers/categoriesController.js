@@ -3,7 +3,7 @@ const db = require("../db/query");
 
 async function categoriesGet(req, res){
    const categories = await db.getCategories();
-   res.render("viewCategories", { categories})
+   res.render("viewCategories", { categories })
 }
 
 async function addCategoryGet(req, res){
@@ -40,6 +40,12 @@ async function editCategoryItemPost(req,res){
     res.redirect(`/${req.params.category}/edit/${req.params.id}`);
 }
 
+async function removeCategoryItem(req, res){
+    const {category, itemId} = req.params;
+    await db.removeCategoryItem(category, Number(itemId));
+    res.redirect(`/${category}/view/`)
+}
+
 
 module.exports = {
     categoriesGet,
@@ -47,5 +53,6 @@ module.exports = {
     addCategoryPost,
     viewCategoryGet,
     editCategoryItemGet,
-    editCategoryItemPost
+    editCategoryItemPost,
+    removeCategoryItem
 };

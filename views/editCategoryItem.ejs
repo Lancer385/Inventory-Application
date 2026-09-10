@@ -8,6 +8,8 @@
 <body>
     <% if (locals.item) { %>
         <p><%= item.name %> </p>
+        <form action="/<%= categoryName %>/delete/<%= item.id %>" method="post"> <input type="text" name="delete" id="delete" hidden><button type="submit">Delete</button></form>
+
         <form action="/<%= categoryName %>/edit/<%= item.id %>" method="post" onsubmit="return confirm('Are you sure you want to submit this form?')">
             <label for="gameName"><%= categoryName %> Name: </label>
             <input type="text" name="name" id="name" value="<%= item.name %>">

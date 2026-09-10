@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const { indexGet } = require("../controllers/indexController");
-const { gamesGet, addGameGet, addGamePost, editGameGet, editGamePost, deleteRelatedCategory, assignCategoryGet, assignCategoryPost} = require("../controllers/gamesController");
-const { categoriesGet, addCategoryGet, addCategoryPost, viewCategoryGet, editCategoryItemGet, editCategoryItemPost } = require("../controllers/categoriesController");
+const { gamesGet, addGameGet, addGamePost, editGameGet, editGamePost, deleteRelatedCategory, assignCategoryGet, assignCategoryPost, removeGame} = require("../controllers/gamesController");
+const { categoriesGet, addCategoryGet, addCategoryPost, viewCategoryGet, editCategoryItemGet, editCategoryItemPost, removeCategoryItem } = require("../controllers/categoriesController");
 const router = Router()
 
 
@@ -19,6 +19,8 @@ router.get("/:category/view/", viewCategoryGet);
 router.get("/:category/edit/:id", editCategoryItemGet);
 router.post("/:category/edit/:id", editCategoryItemPost);
 router.post("/:category/deleteRelation/", deleteRelatedCategory);
-router.get("/:gameName/:gameId/assignCategories", assignCategoryGet)
-router.post("/:gameName/:gameId/assignCategories", assignCategoryPost)
+router.get("/:gameName/:gameId/assignCategories", assignCategoryGet);
+router.post("/:gameName/:gameId/assignCategories", assignCategoryPost);
+router.post("/game/delete/:gameId", removeGame);
+router.post("/:category/delete/:itemId", removeCategoryItem);
 module.exports = router
