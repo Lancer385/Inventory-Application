@@ -7,7 +7,7 @@
 </head>
 <body>
     <% if (Object.keys(categories).length !== 0) { %>
-    <form action="/<%= gameName %>/<%= gameId %>/assignCategories" method="post">
+    <form action="/<%= gameName %>/<%= gameID %>/assignCategories" method="post">
         <% for (const [name, arr] of Object.entries(categories)) { %>
         <label for="<%= name %>"> <%= name %> : </label>
             <input type="checkbox" id="<%= name %>" class="category">

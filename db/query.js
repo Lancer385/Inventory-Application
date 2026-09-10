@@ -1,5 +1,10 @@
 const pool  = require('./pool');
 
+const singularMap = {
+    platforms: "platform",
+    genres: "genre",
+    developers: "developer"
+}
 
 async function queryGame(gameID = null) {
     const clause = gameID ? `WHERE games.id = $1` : '';
@@ -61,10 +66,11 @@ async function getCategories() {
     const platforms = (await pool.query (`SELECT * FROM platforms`)).rows
     const genres = (await pool.query (`SELECT * FROM genres`)).rows
     const developers = (await pool.query (`SELECT * FROM developers`)).rows;
-    return {platforms: platforms, genres: genres, developers: developers}
+    return {platforms, genres, developers}
 }
 
-async function queryCategory(categoryName, categoryNameSingular, categoryID = null){ 
+async function queryCategory(categoryName, categoryID = null){ 
+    const categoryNameSingular = singularMap[categoryName];
     const clause = categoryID ? `HAVING ${categoryName}.id = $1` : '';
     const id = categoryID ? [categoryID] : [];
     
@@ -78,8 +84,8 @@ async function queryCategory(categoryName, categoryNameSingular, categoryID = nu
     return categoryID? category.rows[0] : category.rows;
 }
 
-const getCategory = (category, singular) => queryCategory(category, singular);
-const getCategoryItem = (category, singular, id)  => queryCategory(category, singular, id);
+const getCategory = (category) => queryCategory(category);
+const getCategoryItem = (category, id)  => queryCategory(category, id);
 
 async function addNewGame(name, description = ""){
     await pool.query("INSERT INTO games (name, description) VALUES ($1, $2)", [name, description]);
@@ -89,20 +95,22 @@ async function addNewCategory(tableName, name){
     await pool.query(`INSERT INTO ${tableName} (name) VALUES ($1)`, [name]);
 };
 
-async function addRelation(category, gameName, item){
+async function addRelation(categoryName, gameName, item){
+    const categoryNameSingular = singularMap[categoryName];
     await pool.query(
-        `INSERT INTO games_${category}s (game_id, ${category}_id)
+        `INSERT INTO games_${categoryNameSingular} (game_id, ${categoryName}_id)
             VALUES (
             (SELECT id FROM games WHERE name = $1),
-            (SELECT id FROM ${category}s WHERE name = $2)
+            (SELECT id FROM ${categoryNameSingular} WHERE name = $2)
             )
         `
     ,[gameName, item]);
 };
 
-async function removeRelation(category, singular, gameID, categoryID){
+async function removeRelation(categoryName, gameID, categoryID){
+    const categoryNameSingular = singularMap[categoryName];
  await pool.query(
-    `DELETE FROM games_${category} WHERE game_id = $1 AND ${singular}_id = $2;
+    `DELETE FROM games_${categoryName} WHERE game_id = $1 AND ${categoryNameSingular}_id = $2;
     `, [gameID, categoryID]
  )
 }

@@ -3,7 +3,7 @@ const db = require("../db/query");
 
 async function categoriesGet(req, res){
    const categories = await db.getCategories();
-   res.render("viewCategories", { categories: categories})
+   res.render("viewCategories", { categories})
 }
 
 async function addCategoryGet(req, res){
@@ -23,16 +23,14 @@ async function addCategoryPost(req,res){
 };
 async function viewCategoryGet(req, res){
     const categoryName = req.params.category;
-    const categoryNameSingular = categoryName.slice(0, req.params.category.length - 1);
-    const category = await db.getCategory(categoryName, categoryNameSingular);
-    res.render("viewCategory", {category: category, categoryName: categoryName});
+    const category = await db.getCategory(categoryName);
+    res.render("viewCategory", {category,  categoryName});
 };
 
 async function editCategoryItemGet(req, res){
     const categoryName = req.params.category;
-    const categoryNameSingular = categoryName.slice(0, categoryName.length - 1);
-    const categoryItem = await db.getCategoryItem(categoryName, categoryNameSingular, Number(req.params.id));
-    res.render("editCategoryItem", {item: categoryItem, categoryName: categoryName});
+    const item = await db.getCategoryItem(categoryName, Number(req.params.id));
+    res.render("editCategoryItem", {item, categoryName});
 
 }
 
