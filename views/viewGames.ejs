@@ -9,7 +9,8 @@
     <div>
         <% if (locals.games){ %>
         <% for (const game of games){ %>
-            <%- include("partials/game", {game: game})  %>
+            <% const {gameID, gameName, gameDescription, ...categories} = game;%>
+            <%- include("partials/game", {gameID: gameID, gameName: gameName, gameDescription: gameDescription, categories: categories})  %>
         <% }} %>
     </div>
 </body>

@@ -7,17 +7,17 @@ async function categoriesGet(req, res){
 }
 
 async function addCategoryGet(req, res){
-    res.render("categoryForm");
+    const categories =  await db.getCategories();
+    res.render("categoryForm", {categories: Object.keys(categories)});
 }
 
 async function addCategoryPost(req,res){
-    const {platforms, genres, developers} = req.body;
-    for (const category of [{tableName: "platforms", value: platforms}, {tableName: "genres", value: genres}, {tableName: "developers", value: developers}]){
-        if (!category.value){
+    for (const [tableName, value] of Object.entries(req.body)){
+        if (!value){
             continue;
         }
        
-        await db.addNewCategory(category.tableName, category.value);
+        await db.addNewCategory(tableName, value);
     }
      res.redirect("/");
 };
@@ -51,6 +51,3 @@ module.exports = {
     editCategoryItemGet,
     editCategoryItemPost
 };
-    
-
-

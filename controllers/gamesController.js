@@ -35,8 +35,8 @@ async function addGamePost(req, res){
 }
 
 async function editGameGet(req,res){
-    const game = await db.getGame(req.params.id);
-    res.render("editGames", {game: game})
+    const {gameID, gameName, gameDescription, ...categories} = await db.getGame(req.params.id);
+    res.render("editGames", {gameID: gameID, gameName: gameName, gameDescription: gameDescription, categories: categories})
 }
 
 async function editGamePost(req, res){

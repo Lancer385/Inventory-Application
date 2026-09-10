@@ -1,5 +1,5 @@
 <div>
-    <% if(categories.platforms){ %>
+    <% if(Object.keys(categories) !== 0){ %>
         <%=name.toUpperCase() %>
     <% }; %> 
     <% for (category of categories) {%>
