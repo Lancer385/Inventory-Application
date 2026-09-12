@@ -5,8 +5,7 @@ async function indexGet(req, res){
 }
 
 async function addGameGet(req, res){
-    const categories = await db.getCategories();
-    res.render("gamesForm", {categories});
+    res.render("gamesForm", { categories: req.categories });
 }
 
 
@@ -33,8 +32,7 @@ async function addGamePost(req, res){
 
 
 async function addCategoryGet(req, res){
-    const categories =  await db.getCategories();
-    res.render("categoryForm", {categories: Object.keys(categories)});
+    res.render("categoryForm", {categories: Object.keys(req.categories)});
 }
 
 async function addCategoryPost(req,res){

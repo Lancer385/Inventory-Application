@@ -7,11 +7,15 @@
 </head>
 <body>
     <div>
-        <% if (locals.games){ %>
+        <% if (Object.keys(games).length !== 0){ %>
+            <% console.log(Object.keys(games)) %>
         <% for (const game of games){ %>
             <% const {gameID, gameName, gameDescription, ...categories} = game;%>
             <%- include("partials/game", {gameID: gameID, gameName: gameName, gameDescription: gameDescription, categories: categories})  %>
-        <% }} %>
+            <% } %>
+        <% } else { %>
+            <h1>There is no game in the library</h1>
+        <% } %>
     </div>
 </body>
 </html>

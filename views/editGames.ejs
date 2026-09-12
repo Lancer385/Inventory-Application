@@ -9,7 +9,7 @@
     <% if (locals.gameName) { %>
     <form action="/games/delete/<%= gameID %>" method="post"><button type="submit">Delete</button></form>
     <div class="assignCategories">
-        <a href="/<%= gameName %>/<%= gameID %>/assignCategories">add new category</a>
+        <a href="/games/<%= gameName %>/<%= gameID %>/assignCategories">add new category</a>
     </div>
     <div class="games">
         <div class="view">

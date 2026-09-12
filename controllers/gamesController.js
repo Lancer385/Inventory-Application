@@ -1,4 +1,5 @@
 const db = require("../db/query");
+const CustomError = require("../utils/customError");
 
 
 async function gamesGet(req, res){
@@ -8,7 +9,11 @@ async function gamesGet(req, res){
 
 
 async function editGameGet(req,res){
-    const {gameID, gameName, gameDescription, ...categories} = await db.getGame(req.params.id);
+    const game = await db.getGame(req.params.id);
+    if (!game) {
+        throw new CustomError("Requested game not Found", 404);
+    }
+    const {gameID, gameName, gameDescription, ...categories } = game;
     res.render("editGames", {gameID, gameName, gameDescription, categories})
 }
 
@@ -19,11 +24,14 @@ async function editGamePost(req, res){
 }
 
 async function assignCategoryGet(req, res) {
-    const categories = await db.getCategories();
-    const { gameID, gameName, gameDescription, ...assignedCategories } = await db.getGame(req.params.gameId);
+    const game = await db.getGame(req.params.gameId);
+    if (!game) {
+        throw new CustomError("Requested game not Found", 404); 
+    }
+    const { gameID, gameName, gameDescription, ...assignedCategories } = game;
     const matched = {}
     for (const category of Object.keys(assignedCategories)){
-        let result = categories[category].filter(object1 => !assignedCategories[category].some(object2 => object1.id === object2.id));
+        let result = req.categories[category].filter(object1 => !assignedCategories[category].some(object2 => object1.id === object2.id));
         if (result.length !== 0) {
             matched[category] = result;
         };
@@ -53,14 +61,14 @@ async function assignCategoryPost(req, res){
 }
 
 
-async function deleteRelatedCategory(req, res){
+async function deleteRelatedCategoryPost(req, res){
     const {gameId, itemId} = req.body;
     await db.removeRelation(req.params.category, gameId, itemId);
     res.json({ success: true })
 }
 
 
-async function removeGame(req, res){
+async function removeGamePost(req, res){
     const gameID = req.params.gameId;
     await db.removeGame(Number(gameID));
     res.redirect("/games")
@@ -71,6 +79,6 @@ module.exports = {
     editGamePost, 
     assignCategoryGet,
     assignCategoryPost,
-    deleteRelatedCategory,
-    removeGame
+    deleteRelatedCategoryPost,
+    removeGamePost
 }

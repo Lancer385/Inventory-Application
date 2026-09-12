@@ -6,13 +6,15 @@
     <title>Document</title>
 </head>
 <body>
-    <% if (locals.category) { %>
+    <% if (Object.keys(category).length !== 0) { %>
         <div class="categories">
             <% for (const item of category)  { %>   
                 <div> <%= item.name %> </div>
                 <a href="/categories/<%= categoryName %>/edit/<%= item.id %>">edit</a>
             <% } %>
         </div>
-    <% } %>
+    <% } else { %>
+            <h1> There is no <%= categoryName %> here</h1>
+        <% } %>
 </body>
 </html>

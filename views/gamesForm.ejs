@@ -13,11 +13,13 @@
         <label for="gameDescription">Game Description: </label>
         <textarea name="gameDescription" id="gameDescription"></textarea>
         <% for (const [name, arr] of Object.entries(categories)) { %>
+            <% if (arr.length !== 0) {%>
             <label for="<%= name %>"> <%= name %> : </label>
             <input type="checkbox" id="<%= name %>" class="category">
             <fieldset id="<%= name %>Input" disabled>
                 <%- include("partials/options",  {name: name, category: arr}) %>
             </fieldset>
+            <% } %>
         <% } %>
         <button type="submit">Submit</button>
     </form>
