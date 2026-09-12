@@ -4,7 +4,7 @@
     </div>
     <script>
        document.querySelector(`[data-id="<%= item.id %>"][data-category="<%= name %>"]`).addEventListener("click", async () => {
-            const url = `/<%= categoryName %>/deleteRelation/`
+            const url = `/games/<%= categoryName %>/deleteRelation/`
             const response = await fetch(url, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },

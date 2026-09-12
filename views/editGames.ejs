@@ -7,7 +7,7 @@
 </head>
 <body>
     <% if (locals.gameName) { %>
-    <form action="/game/delete/<%= gameID %>" method="post"><button type="submit">Delete</button></form>
+    <form action="/games/delete/<%= gameID %>" method="post"><button type="submit">Delete</button></form>
     <div class="assignCategories">
         <a href="/<%= gameName %>/<%= gameID %>/assignCategories">add new category</a>
     </div>
@@ -17,7 +17,7 @@
             <p> <%= gameDescription %> <p>
         </div>
         <div class="editForm">
-            <form action="/game/edit/<%=gameID%>" method="post" onsubmit="return confirm('Are you sure you want to submit this form?')">
+            <form action="/games/edit/<%=gameID%>" method="post" onsubmit="return confirm('Are you sure you want to submit this form?')">
                 <label for="gameName">Game Name: </label>
                 <input type="text" name="gameName" id="gameName" value="<%= gameName %>">
                 <label for="gameDescription">Game Description: </label>

@@ -6,32 +6,6 @@ async function gamesGet(req, res){
     res.render("viewGames", { games });
 };
 
-async function addGameGet(req, res){
-    const categories = await db.getCategories();
-    res.render("gamesForm", {categories});
-}
-
-
-async function addGamePost(req, res){
-    const {gameName, gameDescription, ...categories} = req.body
-    await db.addNewGame(gameName, gameDescription);
-    for (const [name, category] of Object.entries(categories)){
-        if (!category[name]){
-            continue;
-        }
-        if(Array.isArray(category)){
-            for (const item of category){
-                if (item !== ""){
-                    await db.addRelation(name, gameName, item);
-                }
-            }
-        }
-        else {
-              await db.addRelation(name, gameName, category);
-        }
-    }
-    res.redirect("/games");
-}
 
 async function editGameGet(req,res){
     const {gameID, gameName, gameDescription, ...categories} = await db.getGame(req.params.id);
@@ -41,7 +15,7 @@ async function editGameGet(req,res){
 async function editGamePost(req, res){
     const {gameName, gameDescription} = req.body;
     await db.updateGame(req.params.id, gameName, gameDescription);
-    res.redirect(`/game/edit/` + req.params.id);
+    res.redirect(`/games/edit/` + req.params.id);
 }
 
 async function assignCategoryGet(req, res) {
@@ -93,8 +67,6 @@ async function removeGame(req, res){
 }
 module.exports = {
     gamesGet,
-    addGameGet,
-    addGamePost,
     editGameGet,
     editGamePost, 
     assignCategoryGet,

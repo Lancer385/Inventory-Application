@@ -1,26 +1,16 @@
 const db = require("../db/query");
+const CustomError = require("../utils/customError");
 
 
 async function categoriesGet(req, res){
    const categories = await db.getCategories();
+   if (!categories){
+    throw new CustomError("Couldn't Find the requested Categories", 404)
+   }
    res.render("viewCategories", { categories })
 }
 
-async function addCategoryGet(req, res){
-    const categories =  await db.getCategories();
-    res.render("categoryForm", {categories: Object.keys(categories)});
-}
 
-async function addCategoryPost(req,res){
-    for (const [tableName, value] of Object.entries(req.body)){
-        if (!value){
-            continue;
-        }
-       
-        await db.addNewCategory(tableName, value);
-    }
-     res.redirect("/");
-};
 async function viewCategoryGet(req, res){
     const categoryName = req.params.category;
     const category = await db.getCategory(categoryName);
@@ -43,14 +33,12 @@ async function editCategoryItemPost(req,res){
 async function removeCategoryItem(req, res){
     const {category, itemId} = req.params;
     await db.removeCategoryItem(category, Number(itemId));
-    res.redirect(`/${category}/view/`)
+    res.redirect(`/categories/${category}/view/`)
 }
 
 
 module.exports = {
     categoriesGet,
-    addCategoryGet,
-    addCategoryPost,
     viewCategoryGet,
     editCategoryItemGet,
     editCategoryItemPost,

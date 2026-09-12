@@ -10,7 +10,7 @@
         <div class="categories">
             <% for (const item of category)  { %>   
                 <div> <%= item.name %> </div>
-                <a href="/<%= categoryName %>/edit/<%= item.id %>">edit</a>
+                <a href="/categories/<%= categoryName %>/edit/<%= item.id %>">edit</a>
             <% } %>
         </div>
     <% } %>
