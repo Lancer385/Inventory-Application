@@ -1,9 +1,9 @@
 #! /usr/bin/env node
 const { Client } = require("pg");
-require("dotenv").config();
 
-const SQL = `
-DROP TABLE IF EXISTS games, genres, developers, platforms, games_genres, games_platforms, games_developers;
+require("dotenv").config();
+const drop = `DROP TABLE IF EXISTS games, genres, developers, platforms, games_genres, games_platforms, games_developers;`;
+const tables = `
 CREATE TABLE games (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   name TEXT NOT NULL UNIQUE,
@@ -45,8 +45,9 @@ CREATE TABLE games_platforms (
   PRIMARY KEY (game_id, platform_id),
   FOREIGN KEY (game_id) REFERENCES games(id) ON DELETE CASCADE,
   FOREIGN KEY (platform_id) REFERENCES platforms(id) ON DELETE CASCADE
-);
+);`;
 
+const seed = `
 INSERT INTO games (name, description) VALUES ('Celeste',
 'Celeste is a 2018 platform video game developed and published by indie studio Maddy Makes Games. The player controls the player character Madeline, a young woman with anxiety and depression, who endeavors to climb Celeste Mountain, a fictional version of Mount Celeste.'
 );
@@ -123,18 +124,29 @@ VALUES (
 (
   (SELECT id from games WHERE name = 'Hollow Knight'),
   (SELECT id from developers WHERE name = 'Team Cherry')
-);
-`;
+);`;
 
-async function main() {
-  console.log("seeding...");
+async function SQLquery(query, message) {
+  console.log(message);
   const client = new Client({
     connectionString: process.env.CONNECTION_STRING,
   });
   await client.connect();
-  await client.query(SQL);
+  await client.query(query);
   await client.end();
   console.log("done");
 }
 
-main();
+const command = process.argv[2];
+
+if (command === "--create" || command === "-c") {
+  SQLquery(tables, "creating tables...");
+} else if (command === "--drop" || command === "-d") {
+  SQLquery(drop, "dropping tables...");
+} else if (command === "--seed" || command === "-s") {
+  SQLquery(seed, "seeding...");
+} else {
+  console.log(
+    "Usage: node ./db/populatedb.js [OPTION]\n-c, --create\nCreate your tables(only once or after reset)\n\n-d, --drop\ndrop all of the tables and start over(run --create)\n\n-s, --seed\nSeed your tables with random data",
+  );
+}

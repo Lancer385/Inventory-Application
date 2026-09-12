@@ -8,7 +8,6 @@
 <body>
     <div>
         <% if (Object.keys(games).length !== 0){ %>
-            <% console.log(Object.keys(games)) %>
         <% for (const game of games){ %>
             <% const {gameID, gameName, gameDescription, ...categories} = game;%>
             <%- include("partials/game", {gameID: gameID, gameName: gameName, gameDescription: gameDescription, categories: categories})  %>
