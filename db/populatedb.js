@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 const { Client } = require("pg");
-require('dotenv').config()
+require("dotenv").config();
 
 const SQL = `
 DROP TABLE IF EXISTS games, genres, developers, platforms, games_genres, games_platforms, games_developers;
@@ -129,7 +129,7 @@ VALUES (
 async function main() {
   console.log("seeding...");
   const client = new Client({
-    connectionString: process.env.CONNECTION_STRING
+    connectionString: process.env.CONNECTION_STRING,
   });
   await client.connect();
   await client.query(SQL);
@@ -138,5 +138,3 @@ async function main() {
 }
 
 main();
-
-

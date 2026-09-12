@@ -1,7 +1,13 @@
 const { Router } = require("express");
-const { categoriesGet,viewCategoryGet, editCategoryItemGet, editCategoryItemPost, removeCategoryItemPost } = require("../controllers/categoriesController");
+const {
+  categoriesGet,
+  viewCategoryGet,
+  editCategoryItemGet,
+  editCategoryItemPost,
+  removeCategoryItemPost,
+} = require("../controllers/categoriesController");
 const { loadCategories } = require("../middlewares/categoriesMiddleware");
-const categoriesRouter = Router()
+const categoriesRouter = Router();
 
 categoriesRouter.get("/", loadCategories, categoriesGet);
 categoriesRouter.get("/:category/view/", viewCategoryGet);
