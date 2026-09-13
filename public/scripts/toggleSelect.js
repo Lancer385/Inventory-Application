@@ -1,0 +1,10 @@
+/* eslint-disable no-undef */
+const categories = document.querySelectorAll(".category");
+for (const category of categories) {
+  category.addEventListener("click", () => {
+    const id = category.id;
+    console.log(category);
+    const input = document.querySelector(`#${id}Input`);
+    input.disabled ? (input.disabled = false) : (input.disabled = true);
+  });
+}

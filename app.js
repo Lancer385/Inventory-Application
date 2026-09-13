@@ -6,10 +6,12 @@ const gamesRouter = require("./routes/gamesRouter");
 const categoriesRouter = require("./routes/CategoriesRouter");
 const CustomError = require("./utils/customError");
 const PORT = process.env.PORT || 8000;
+const assetsPath = path.join(__dirname, "public");
 
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(express.static(assetsPath));
 app.set("view engine", "ejs");
 app.use("/games", gamesRouter);
 app.use("/categories", categoriesRouter);
