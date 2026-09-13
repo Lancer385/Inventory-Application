@@ -8,11 +8,14 @@ async function gamesGet(req, res) {
 
 async function editGameGet(req, res) {
   const game = await db.getGame(req.params.id);
-  if (!game) {
-    throw new CustomError("Requested game not Found", 404);
-  }
   const { gameID, gameName, gameDescription, ...categories } = game;
-  res.render("editGames", { gameID, gameName, gameDescription, categories });
+  res.render("editGames", {
+    gameID,
+    gameName,
+    gameDescription,
+    categories,
+    errors: [],
+  });
 }
 
 async function editGamePost(req, res) {

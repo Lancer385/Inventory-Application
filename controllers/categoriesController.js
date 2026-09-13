@@ -20,7 +20,7 @@ async function editCategoryItemGet(req, res) {
   if (!item) {
     throw new CustomError("Requested Category item Not Found", 404);
   }
-  res.render("editCategoryItem", { item, categoryName });
+  res.render("editCategoryItem", { item, categoryName, errors: [] });
 }
 
 async function editCategoryItemPost(req, res) {
