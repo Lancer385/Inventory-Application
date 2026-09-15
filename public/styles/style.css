@@ -1,7 +1,160 @@
+/* global */
+@font-face {
+  font-family: 'PressStart2p';
+  src: url('../fonts/PressStart2P-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+* {
+    box-sizing: border-box;
+    font-family: 'PressStart2p', Times, serif;
+}
+a {
+    text-decoration: none;
+}
+
+
+header, footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 10px;
+    text-align: center; 
+}
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #050515;
+  background-image: 
+    radial-gradient(circle, #ffffff 1px, transparent 1px),
+    radial-gradient(circle, #ffffff 2px, transparent 2px),
+    radial-gradient(circle, #ffffff 2px, transparent 2px),
+    linear-gradient(to top, #050515, #120b2e, #311442);
+  background-size: 120px 120px, 120px 120px, 120px 120px, 100% 100%;
+  background-position: 0 0, 50px 30px, 50px, 0 0; 
+  animation: shining 2.5s linear infinite;
+}
+
+@keyframes shining {
+    from {
+        background-image: 
+        radial-gradient(circle, #ffffff 1px, transparent 1px),
+        radial-gradient(circle, #ffffff 2px, transparent 2px),
+        radial-gradient(circle, #ffffff 2px, transparent 2px),
+        linear-gradient(to top, #050515, #120b2e, #311442);
+    }
+    to {
+        background-image: 
+            radial-gradient(circle, #ffffff 2px, transparent 2px),
+            radial-gradient(circle, #ffffff 1px, transparent 1px),
+            radial-gradient(circle, #ffffff 1px, transparent 1px),
+            linear-gradient(to top, #050515, #120b2e, #311442);
+    }
+}
+
+
+button {
+  background: linear-gradient(180deg, #FF9A76 50%, #FF6363 50%);
+  border: 0;
+  box-shadow: 
+  4px 0 0 0 #000,
+  -4px 0 0 0 #000,
+  0 4px 0 0 #000,
+  0 -4px 0 0 #000;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  padding: 0;
+  min-width: 180px;
+  font-size: 15px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all .3s;
+}
+
+button:active,
+button:hover {
+  outline: 0;
+}
+
+button span {
+  background-color: rgb(5, 6, 45);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  height: 90%;
+  width: 95%;
+
+  transition: 300ms;
+}
+
+button:hover span {
+  background: none;
+}
+
+button:active {
+  transform: scale(0.9);
+}
+
+
 /* header */
 nav ul {
   list-style-type: none; 
   margin: 0;             
-  padding: 0;           
+  padding: 0;      
+ 
 }
 
+
+h1 {
+    color: white;
+    text-shadow: 1px 1px 2px black;
+}
+
+
+header {
+    flex-direction: column;
+    height: 20%;
+}
+
+ul {
+    display: flex;
+    gap: 10px;
+}
+
+/* body */
+.container {
+    display: flex;
+    height: 70%;
+    background-color: rgba(11, 2, 2, 0.241);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10%;
+    padding: 20px;
+}
+
+
+/* footer */
+
+footer {
+    color: white;
+    gap: 10px;
+    height: 10%;
+}
+
+footer> a {
+    color: rgb(106, 49, 220);
+}

@@ -8,19 +8,14 @@
 </head>
 <body>
     <%- include("partials/header") %>
-    <div class="links">
-        <div id="goToCategories">
-            <a href="/categories">Categories</a>
-        </div>
-        <div id="goToGames">
-            <a href="/games">Games</a>
-        </div>
-    <div class="newGame">
-        <a href="/addGame">add new game</a>
+    <div class="container">
+            <div id="goToCategories">
+                <a href="/categories"><button><span>Categories</span></button></a>
+            </div>
+            <div id="goToGames">
+                <a href="/games"><button><span>Games</span></button></a>
+            </div>
     </div>
-    <div class="newCategory">
-        <a href="/addCategory">add new category</a>
-    </div>
-    </div>
+    <%- include("partials/footer") %>
 </body>
 </html>
