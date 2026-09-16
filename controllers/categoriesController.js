@@ -2,7 +2,10 @@ const db = require("../db/query");
 const CustomError = require("../utils/customError");
 
 async function categoriesGet(req, res) {
-  res.render("viewCategories", { categories: req.categories });
+  res.render("viewCategories", {
+    categories: req.categories,
+    title: "Categories",
+  });
 }
 
 async function viewCategoryGet(req, res) {
@@ -11,7 +14,11 @@ async function viewCategoryGet(req, res) {
   if (!category) {
     throw new CustomError("Requested Category Not Found", 404);
   }
-  res.render("viewCategory", { category, categoryName, title: "Categories" });
+  res.render("viewCategory", {
+    category,
+    categoryName,
+    title: `${categoryName} items`,
+  });
 }
 
 async function editCategoryItemGet(req, res) {
