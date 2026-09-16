@@ -39,6 +39,13 @@ app.use((err, req, res, next) => {
         message: "A record with the entry already exists",
       },
     });
+  } else if (err.code === "42P01") {
+    res.status(500).render("error", {
+      error: {
+        code: 500,
+        message: "Failed to Connect to or find the database",
+      },
+    });
   } else {
     res.status(err.statusCode || 500).render("error", {
       error: {

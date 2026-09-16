@@ -5,7 +5,11 @@ async function indexGet(req, res) {
 }
 
 async function addGameGet(req, res) {
-  res.render("gamesForm", { categories: req.categories, errors: [] });
+  res.render("gamesForm", {
+    categories: req.categories,
+    errors: [],
+    title: "Add New Game",
+  });
 }
 
 async function addGamePost(req, res) {
@@ -32,6 +36,7 @@ async function addCategoryGet(req, res) {
   res.render("categoryForm", {
     categories: Object.keys(req.categories),
     errors: [],
+    title: "Add New Items",
   });
 }
 

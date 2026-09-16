@@ -11,7 +11,7 @@ async function viewCategoryGet(req, res) {
   if (!category) {
     throw new CustomError("Requested Category Not Found", 404);
   }
-  res.render("viewCategory", { category, categoryName });
+  res.render("viewCategory", { category, categoryName, title: "Categories" });
 }
 
 async function editCategoryItemGet(req, res) {
@@ -20,7 +20,12 @@ async function editCategoryItemGet(req, res) {
   if (!item) {
     throw new CustomError("Requested Category item Not Found", 404);
   }
-  res.render("editCategoryItem", { item, categoryName, errors: [] });
+  res.render("editCategoryItem", {
+    item,
+    categoryName,
+    errors: [],
+    title: "Items",
+  });
 }
 
 async function editCategoryItemPost(req, res) {

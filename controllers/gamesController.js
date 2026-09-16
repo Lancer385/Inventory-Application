@@ -3,7 +3,7 @@ const CustomError = require("../utils/customError");
 
 async function gamesGet(req, res) {
   const games = await db.getAllGames();
-  res.render("viewGames", { games });
+  res.render("viewGames", { games, title: "Games" });
 }
 
 async function editGameGet(req, res) {
@@ -15,6 +15,7 @@ async function editGameGet(req, res) {
     gameDescription,
     categories,
     errors: [],
+    title: `Edit ${gameName}`,
   });
 }
 
@@ -47,6 +48,7 @@ async function assignCategoryGet(req, res) {
     gameName,
     gameDescription,
     categories: matched,
+    title: "Assign Categories",
   });
 }
 
