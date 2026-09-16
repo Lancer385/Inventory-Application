@@ -7,22 +7,24 @@
     <title><%= title  %></title>
 </head>
 <body>
+    <%- include("partials/header")  %>
     <% if (Object.keys(categories).length !== 0) { %>
-    <div class="containter">
+    <div class="formContainer">
         <form action="/games/<%= gameName %>/<%= gameID %>/assignCategories" method="post">
             <% for (const [name, arr] of Object.entries(categories)) { %>
-            <label for="<%= name %>"> <%= name %> : </label>
+            <label><%= name %></label>
                 <input type="checkbox" id="<%= name %>" class="category">
                     <fieldset id="<%= name %>Input" disabled>
                         <%- include("partials/options",  {name: name, category: arr}) %>
                     </fieldset>
             <% } %>
-            <button type="submit">Add</button>
+            <button type="submit"><span>Assign</span></button>
         </form>
            <script src="/scripts/toggleSelect.js"></script>
         <% } else {  %>
             <h1>looks like there's nothing to add</h1>
         <% } %>
     </div>
+    <%- include("partials/footer")  %>
 </body> 
 </html>
