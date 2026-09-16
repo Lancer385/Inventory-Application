@@ -167,6 +167,7 @@ ul {
 /* body */
 .container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
   
@@ -330,4 +331,15 @@ footer>a:hover {
     align-items: center;
     justify-content: center;
     font-size: 2em;
+}
+
+
+
+@media (width >= 784px){ 
+    .container, header {
+        flex-direction: row;
+    }
+    header {
+        justify-content: space-around;
+    }
 }
