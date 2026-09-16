@@ -7,15 +7,21 @@
     <title>Document</title>
 </head>
 <body>
-    <div>
-        <% if (Object.keys(games).length !== 0){ %>
+    <%- include("partials/header") %>
+   
+    <% if (Object.keys(games).length !== 0){ %>
+        <div class="gamesContainer">
         <% for (const game of games){ %>
             <% const {gameID, gameName, gameDescription, ...categories} = game;%>
             <%- include("partials/game", {gameID: gameID, gameName: gameName, gameDescription: gameDescription, categories: categories})  %>
-            <% } %>
-        <% } else { %>
-            <h1>There is no game in the library</h1>
         <% } %>
-    </div>
+        </div>
+    <% } else { %>
+            <div class="container">
+                <h3>There is no game in the library</h3>
+            </div>
+    <% } %>
+
+    <%- include("partials/footer") %>
 </body>
 </html>

@@ -1,12 +1,7 @@
-<div>
-    <% if(Object.keys(categories) !== 0){ %>
-        <%=name.toUpperCase() %>
-    <% }; %> 
-    <% for (category of categories) {%>
-        <div>
-        <% if (category) { %>
-        <%= category.name %>
-        <% } %>
+<% for (category of categories) {%>
+        <% if (category.name) { %>
+        <div class="<%= name %>">
+            <%= category.name %>
         </div>
-    <% }%>
-</div>
+    <% } %>
+<% }%>

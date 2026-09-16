@@ -8,19 +8,21 @@
 </head>
 <body>
     <% if (Object.keys(categories).length !== 0) { %>
-    <form action="/games/<%= gameName %>/<%= gameID %>/assignCategories" method="post">
-        <% for (const [name, arr] of Object.entries(categories)) { %>
-        <label for="<%= name %>"> <%= name %> : </label>
-            <input type="checkbox" id="<%= name %>" class="category">
-                <fieldset id="<%= name %>Input" disabled>
-                    <%- include("partials/options",  {name: name, category: arr}) %>
-                </fieldset>
+    <div class="containter">
+        <form action="/games/<%= gameName %>/<%= gameID %>/assignCategories" method="post">
+            <% for (const [name, arr] of Object.entries(categories)) { %>
+            <label for="<%= name %>"> <%= name %> : </label>
+                <input type="checkbox" id="<%= name %>" class="category">
+                    <fieldset id="<%= name %>Input" disabled>
+                        <%- include("partials/options",  {name: name, category: arr}) %>
+                    </fieldset>
+            <% } %>
+            <button type="submit">Add</button>
+        </form>
+           <script src="/scripts/toggleSelect.js"></script>
+        <% } else {  %>
+            <h1>looks like there's nothing to add</h1>
         <% } %>
-        <button type="submit">Add</button>
-    </form>
-       <script src="/scripts/toggleSelect.js"></script>
-    <% } else {  %>
-        <h1>looks like there's nothing to add</h1>
-    <% } %>
+    </div>
 </body> 
 </html>

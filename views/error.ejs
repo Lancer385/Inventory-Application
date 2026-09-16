@@ -8,8 +8,11 @@
 </head>
 <body>
     <% if (locals.error) {%>
-        <h1><%= error.code %></h1>
-        <p><%= error.message  %></p>
+        <div class="errorContainer">
+            <h1><%= error.code %></h1>
+            <p><%= error.message  %></p>
+            <a href="/"><button><span>Go to main page</span></button></a>
+        </div>
     <% } %>
 </body>
 </html>

@@ -7,7 +7,11 @@
   font-display: swap;
 }
 
-
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
 * {
     box-sizing: border-box;
     font-family: 'PressStart2p', Times, serif;
@@ -15,7 +19,9 @@
 a {
     text-decoration: none;
 }
-
+.relatedCategory {
+    color: black;
+}
 
 header, footer {
     display: flex;
@@ -24,13 +30,15 @@ header, footer {
     margin: 0;
     padding: 10px;
     text-align: center; 
+    color: white;
 }
 body {
   margin: 0;
   padding: 0;
+  color: white;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #050515;
   background-image: 
     radial-gradient(circle, #ffffff 1px, transparent 1px),
@@ -38,8 +46,8 @@ body {
     radial-gradient(circle, #ffffff 2px, transparent 2px),
     linear-gradient(to top, #050515, #120b2e, #311442);
   background-size: 120px 120px, 120px 120px, 120px 120px, 100% 100%;
-  background-position: 0 0, 50px 30px, 50px, 0 0; 
-  animation: shining 2.5s linear infinite;
+  background-position: 0 0, 50px 30px, 100px 80px, 0 0; 
+  animation: shining 1.8s linear infinite;
 }
 
 @keyframes shining {
@@ -59,7 +67,13 @@ body {
     }
 }
 
-
+.container, .gamesContainer, .categoriesContainer, .formContainer, .categoryItems{
+    height: 70%;
+    flex: 1;
+    background-color: rgba(0, 0, 0, 0.2);
+    gap: 25px;
+    padding: 20px;
+}
 button {
   background: linear-gradient(180deg, #FF9A76 50%, #FF6363 50%);
   border: 0;
@@ -79,7 +93,7 @@ button {
   font-size: 15px;
   text-decoration: none;
   cursor: pointer;
-  transition: all .3s;
+  transition: color 0.15s steps(2);
 }
 
 button:active,
@@ -89,19 +103,18 @@ button:hover {
 
 button span {
   background-color: rgb(5, 6, 45);
-  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
   height: 90%;
   width: 95%;
-
-  transition: 300ms;
+  transition: color 0.15s steps(2),background 0.15s steps(2);
 }
 
 button:hover span {
   background: none;
+  color: black;
 }
 
 button:active {
@@ -117,13 +130,30 @@ nav ul {
  
 }
 
-
-h1 {
-    color: white;
+h1, h3{
     text-shadow: 1px 1px 2px black;
+    color: white;
+}
+h1, footer> a {
+  transition: color 0.15s steps(2);
 }
 
 
+h1:hover {
+  color: #050515;
+    text-shadow: 
+    2px 0 0 #fff,
+    -2px 0 0 #fff,
+    0 2px 0 #fff,
+    0 -2px 0 #fff;
+}
+
+
+
+h3 {
+    height: 25px;
+    margin-bottom: 20px;
+}
 header {
     flex-direction: column;
     height: 20%;
@@ -137,24 +167,167 @@ ul {
 /* body */
 .container {
     display: flex;
-    height: 70%;
-    background-color: rgba(11, 2, 2, 0.241);
     justify-content: center;
     align-items: center;
+  
+}
+
+.gamesContainer {
+    display: grid;
+    gap: 20px;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 350px));
+   
+}
+
+.gameContainer {
+    display: flex;
+    padding: 10px;
     flex-direction: column;
-    gap: 10%;
-    padding: 20px;
+    background-color: rgba(180, 100, 177, 0.613);
+    text-align: center;
+    gap: 20px; 
+}
+
+.gameContainer>a {
+    align-self: center;
+    margin-top: auto;
 }
 
 
+.relatedCategory {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    font-size: .8em;
+}
+.relatedCategory > div {
+    padding: 3px;
+    text-align: center;
+}
+
+.relatedCategory > .platforms {
+    background-color: rgb(100, 200, 255);
+}
+.relatedCategory > .developers {
+    background-color: rgb(150, 255, 150);
+}
+.relatedCategory > .genres {
+    background-color: rgb(255, 180, 100);
+}
+
+
+
+.categoriesContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.categoriesContainer>div {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    font-size: 1.1em;
+  
+}
+.inputs {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    gap: 20px;
+}
+textarea {
+    resize: none;
+}
+.fieldsets {
+    display:  flex;
+    flex-direction: column;
+    align-items: center;
+}
+#platformsInput{
+    border: 2px solid rgb(100, 200, 255);
+}
+
+#genresInput{
+    border: 2px solid rgb(255, 180, 100);
+}
+#developersInput{
+    border: 2px solid  rgb(150, 255, 150);;
+}
+
+.delete {
+    background: rgb(239, 46, 46);
+}
+.gameControl {
+    display: flex;
+    gap: 20px;
+}
+.removeRelation {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    gap: 20px;
+}
+
+.categoryItems {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+.items {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 /* footer */
 
 footer {
-    color: white;
+    margin-top: auto;
+    background-color: #31144285;
     gap: 10px;
-    height: 10%;
+    min-height: 50px;
 }
 
 footer> a {
-    color: rgb(106, 49, 220);
+    color:#d095f7;
+}
+footer>a:hover {
+    color: #3a1daf;
+    text-shadow: 
+    2px 0 0 #d095f7,
+    -2px 0 0 #d095f7,
+    0 2px 0 #d095f7,
+    0 -2px 0 #d095f7;
+}
+
+
+/* error page */
+
+.errorContainer {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em;
 }

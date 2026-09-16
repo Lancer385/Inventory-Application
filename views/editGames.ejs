@@ -7,31 +7,31 @@
     <title>Document</title>
 </head>
 <body>
+    <%- include("partials/header") %>
     <% if (locals.gameName) { %>
-    <form action="/games/delete/<%= gameID %>" method="post"><button type="submit">Delete</button></form>
-    <div class="assignCategories">
-        <a href="/games/<%= gameName %>/<%= gameID %>/assignCategories">add new category</a>
-    </div>
-    <div class="games">
-        <div class="view">
-            <h1> <%= gameName %> </h1>
-            <p> <%= gameDescription %> <p>
+    <div class="formContainer">
+         <% if (errors.length !== 0) { %>
+            <% for (const error of errors) { %>
+            <p><%= error.msg %></p>
+        <% }}%>
+        <div class="gameControl">
+            <form action="/games/delete/<%= gameID %>" method="post" onsubmit="return confirm('Are you sure you want to delete this game?')"><button type="submit" class="delete"><span>Delete</span></button></form>
+                <a href="/games/<%= gameName %>/<%= gameID %>/assignCategories"><button><span>Assign Category</span></button></a>
         </div>
-        <div class="editForm">
-            <form action="/games/edit/<%=gameID%>" method="post" onsubmit="return confirm('Are you sure you want to submit this form?')">
-                <label for="gameName">Game Name: </label>
-                <input type="text" name="gameName" id="gameName" value="<%= gameName %>">
-                <label for="gameDescription">Game Description: </label>
-                <textarea type="field" name="gameDescription" id="gameDescription"><%= gameDescription %></textarea>
-                <button type="submit">Change</button>
-            </form>
+        <form action="/games/edit/<%=gameID%>" method="post" onsubmit="return confirm('Are you sure you want to submit this form?')">
+            <label for="gameName">Game Name</label>
+            <input type="text" name="gameName" id="gameName" value="<%= gameName %>">
+            <label for="gameDescription">Game Description</label>
+            <textarea type="field" name="gameDescription" id="gameDescription" rows="5" cols="20"><%= gameDescription %></textarea>
+            <button type="submit"><span>Change</span></button>
+        </form>
+            <% for (const [name, value] of Object.entries(categories)) { %>
+                <%- include("partials/editRelatedCategory", {gameID: gameID, name: name, category: value}) %>
+            <% } %>
         </div>
-        <% for (const [name, value] of Object.entries(categories)) { %>
-            <%- include("partials/editRelatedCategory", {gameID: gameID, name: name, category: value}) %>
-        <% } %>
     </div>
-
     <% } %>
+    <%- include("partials/footer") %>
 </body>
 
 </html>

@@ -1,10 +1,8 @@
-<li>
+<div class="gameContainer" >
     <div class="game">
-        <a href=<%=`games/edit/${gameID}`%>>Edit</a>
+        <h3><%= gameName %></h3>
     </div>
-    <%= gameID %>, <%= gameName %>
-    <div class="categories">
-        <div class="categoriesView">
+    <div class="relatedCategory">
             <% for (const [name, value] of Object.entries(categories)){ %>
                 <% if (value.length !== 0) { %>
                     <%- include("relatedCategory", {
@@ -12,6 +10,6 @@
                         categories: value
                     }) %>
             <% }}%>
-        </div>
+    </div>
+      <a href=<%=`games/edit/${gameID}`%> ><button><span>Edit</span></button></a>
 </div>
-</li>

@@ -7,16 +7,22 @@
     <title>Document</title>
 </head>
 <body>
+    <%- include("partials/header") %>
     <% if (locals.item) { %>
-        <p><%= item.name %> </p>
-        <form action="/categories/<%= categoryName %>/delete/<%= item.id %>" method="post"> <input type="text" name="delete" id="delete" hidden><button type="submit">Delete</button></form>
-
-        <form action="/categories/<%= categoryName %>/edit/<%= item.id %>" method="post" onsubmit="return confirm('Are you sure you want to submit this form?')">
-            <label for="gameName"><%= categoryName %> Name: </label>
-            <input type="text" name="name" id="name" value="<%= item.name %>">
-            <button type="submit">Change</button>
-        </form>
+        <div class="formContainer">
+         <% if (errors.length !== 0) { %>
+            <% for (const error of errors) { %>
+            <p><%= error.msg %></p>
+        <% }}%>
+            <p><%= item.name %> </p>
+            <form action="/categories/<%= categoryName %>/delete/<%= item.id %>" method="post" onsubmit="return confirm('Are you sure you want to delete this item?')"> <input type="text" name="delete" id="delete" hidden><button type="submit" class="delete"><span>Delete</span></button></form>
+            <form action="/categories/<%= categoryName %>/edit/<%= item.id %>" method="post" onsubmit="return confirm('Are you sure you want to submit this form?')">
+                <label for="gameName"><%= categoryName.charAt(0).toUpperCase() + categoryName.slice(1, -1) %> Name</label>
+                <input type="text" name="name" id="name" value="<%= item.name %>">
+                <button type="submit"><span>Change</span></button>
+            </form>
+        </div>
     <% } %>
+    <%- include("partials/footer") %>
 </body>
-    
 </html>

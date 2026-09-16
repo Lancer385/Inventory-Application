@@ -7,22 +7,36 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="/newGame" method="post">
-        <label for="gameName">Game Name: </label>
-        <input type="text" name="gameName" id="gameName">
-        <label for="gameDescription">Game Description: </label>
-        <textarea name="gameDescription" id="gameDescription"></textarea>
-        <% for (const [name, arr] of Object.entries(categories)) { %>
-            <% if (arr.length !== 0) {%>
-            <label for="<%= name %>"> <%= name %> : </label>
-            <input type="checkbox" id="<%= name %>" class="category">
-            <fieldset id="<%= name %>Input" disabled>
-                <%- include("partials/options",  {name: name, category: arr}) %>
-            </fieldset>
-            <% } %>
-        <% } %>
-        <button type="submit">Submit</button>
-    </form>
+    <%- include("partials/header") %>
+    <div class="formContainer">
+        <% if (errors.length !== 0) { %>
+            <% for (const error of errors) { %>
+            <p><%= error.msg %></p>
+        <% }}%>
+        <form action="/newGame" method="post">
+            <div class="inputs">
+                <label for="gameName">Game Name</label>
+                <input type="text" name="gameName" id="gameName">
+                <label for="gameDescription">Game Description</label>
+                <textarea name="gameDescription" id="gameDescription" rows="5" cols="20"></textarea>
+            </div>
+            <div class="fieldsets">
+                <% for (const [name, arr] of Object.entries(categories)) { %>
+                    <% if (arr.length !== 0) {%>
+                    <div>
+                        <label for="<%= name %>"> <%= name %>:</label>
+                        <input type="checkbox" id="<%= name %>" class="category">
+                    </div>
+                    <fieldset id="<%= name %>Input" disabled>
+                        <%- include("partials/options",  {name: name, category: arr}) %>
+                    </fieldset>
+                    <% } %>
+                <% } %>
+            </div>
+            <button type="submit"><span>Submit</span></button>
+        </form>
+    </div>
+    <%- include("partials/footer") %>
     <script src="/scripts/toggleSelect.js"></script>
 </body>
      

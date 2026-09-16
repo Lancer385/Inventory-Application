@@ -7,15 +7,19 @@
     <title>Document</title>
 </head>
 <body>
+    <%- include("partials/header") %>
     <% if (Object.keys(category).length !== 0) { %>
-        <div class="categories">
+        <div class="categoryItems">
             <% for (const item of category)  { %>   
-                <div> <%= item.name %> </div>
-                <a href="/categories/<%= categoryName %>/edit/<%= item.id %>">edit</a>
+                <div class="items">
+                    <h3> <%= item.name %> </h3>
+                    <a href="/categories/<%= categoryName %>/edit/<%= item.id %>"><button><span>Edit</span></button></a>
+                </div>
             <% } %>
         </div>
     <% } else { %>
             <h1> There is no <%= categoryName %> here</h1>
         <% } %>
+    <%- include("partials/footer") %>
 </body>
 </html>

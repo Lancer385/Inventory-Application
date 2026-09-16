@@ -1,8 +1,7 @@
-<div>
-    <% if(category[name]){ %>
-        <%=name.toUpperCase() %>
-    <% }; %> 
-        <% for (const item of category) { %>
-            <%- include("deleteRelation", {gameID: gameID, item: item, categoryName:name }) %>
-        <% } %>
+<% if (category[0].id) {%>
+    <div id="<%= name %>Input" class="removeRelation">
+         <h2><%= name.toUpperCase() %></h2>
+<% for (const item of category) { %>
+     <%- include("deleteRelation", {gameID: gameID, item: item, categoryName:name }) %>
+<% }} %>
 </div>

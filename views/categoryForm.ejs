@@ -7,15 +7,24 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="/newCategory" method="post">
-        <% for (const category of categories) { %>
-        <label for="<%= category %>"><%= category %> Name: </label>
-        <input type="checkbox" id="<%= category %>" class="category">
-        <input name= "<%= category %>" type="text" id="<%= category %>Input" disabled>
-        <% } %>
-        <button type="submit">Submit</button>
-    </form>
-    <script src="/scripts/toggleSelect.js"></script>
+     <%- include("partials/header") %>
+    <div class="formContainer">
+        <% if (errors.length !== 0) { %>
+            <% console.log(errors) %>
+            <% for (const error of errors) { %>
+            <p><%= error.msg %></p>
+        <% }}%>
+        <form action="/newCategory" method="post">
+            <% for (const category of categories) { %>
+            <label><%= category.charAt(0).toUpperCase() + category.slice(1) %> Name</label>
+            <input type="checkbox" id="<%= category %>" class="category">
+            <input name= "<%= category %>" type="text" id="<%= category %>Input" disabled>
+            <% } %>
+            <button type="submit"><span>Submit</span></button>
+        </form>
+        <script src="/scripts/toggleSelect.js"></script>
+    </div>
+     <%- include("partials/footer") %>
 </body>
 
 </html>
